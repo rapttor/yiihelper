@@ -42,7 +42,7 @@
   },
   "autoload": {
     "classmap" : [
-      "RapTToR\\Helper\\Helper.php"
+      "Helper.php"
     ]
   }
 }
