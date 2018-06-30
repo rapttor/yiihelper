@@ -22,7 +22,7 @@
     {
       "type": "package",
       "package": {
-        "name": "rapttor/helper",
+        "name": "RapTToR/Helper",
         "version": "dev-master",
         "source": {
           "url": "https://github.com/rapttor/helper.git",
@@ -42,7 +42,7 @@
   },
   "autoload": {
     "classmap" : [
-      "Helper.php"
+      "RapTToR\\Helper\\Helper.php"
     ]
   }
 }

@@ -1,8 +1,10 @@
-<?php
+<?php namespace RapTToR\Helper;
 
-namespace RapTToR;
+/**
+ * @author rapttor
+ */
 
-class Helper extends Controller
+class Helper
 {
     public static function urlClean($str, $delimiter = '-')
     {
