@@ -19,14 +19,20 @@ class Helper
 
     public static function header($title, $icon = null)
     {
+        if (defined("Yii")) $title = Yii::t("main", $title);
         return '<h1 class="pull-right"><i class="icons icon-' . $icon . ' pull-right"></i>
-            ' . Yii::t("main", $title) . ' &nbsp;</h1>';
+            ' . $title . ' &nbsp;</h1>';
     }
 
-    public static function checkEmail($mail)
+    public static function checkEmail($mail, $disposable = null)
     {
-        $disposable_mail = file_get_contents(Yii::app()->getBasePath() . "/../protected/modules/email/disposable-email.csv");
-        $disposable_mail = explode(",", $disposable_mail);
+        $disposable_mail = array();
+        if (is_null($disposable)) {
+            $base = "";
+            if (defined("Yii")) $base = Yii::app()->getBasePath();
+            $disposable_mail = file_get_contents($base . "/../protected/modules/email/disposable-email.csv");
+            $disposable_mail = explode(",", $disposable_mail);
+        }
         foreach ($disposable_mail as $disposable) {
             list(, $mail_domain) = explode('@', $mail);
             if (strcasecmp($mail_domain, $disposable) == 0) {
@@ -38,7 +44,8 @@ class Helper
 
     public static function imgurl($cat = null, $id = null)
     {
-        $base = Yii::app()->baseUrl;
+        $base = "";
+        if (defined("Yii")) $base = Yii::app()->baseUrl;
         return $base . "/uploads/" . $cat . "/" . $id . ".jpg";
     }
 
@@ -49,10 +56,11 @@ class Helper
 
     public static function uploadDir($cat = null)
     {
+        $base = "";
         if (isset($_SERVER["HTTP_HOST"])) {
             $base = $_SERVER['DOCUMENT_ROOT'] . "/" . Yii::app()->baseUrl;
         } else {
-            $base = Yii::getPathOfAlias('application');
+            if (defined("Yii")) $base = Yii::getPathOfAlias('application');
         }
         return $base . "/uploads/" . (is_null($cat) ? "" : $cat . '/');
     }
@@ -62,10 +70,6 @@ class Helper
         return (is_array($a) && isset($a[$i])) ? $a[$i] : $default;
     }
 
-    public static function adLength($i)
-    {
-        return self::arrayValue(Yii::app()->params["ad"]["length"], $i);
-    }
 
     public static function rand_date($min_date = "01-01-2016", $max_date = "31-12-2016")
     {
@@ -329,12 +333,15 @@ class Helper
         }
         header('Content-Type: application/json');
         echo $json;
-        foreach (Yii::app()->log->routes as $route) {
+        if (defined("Yii")) foreach (Yii::app()->log->routes as $route) {
             if ($route instanceof CWebLogRoute) {
                 $route->enabled = false; // disable any weblogroutes
             }
         }
-        if ($die) Yii::app()->end();
+        if ($die) {
+            if (defined("Yii")) Yii::app()->end();
+            die;
+        }
     }
 
     public static function map($str, $params)
@@ -348,7 +355,7 @@ class Helper
     { // receive json
         if (!is_null($params)) $url = self::map($url, $params);
         $data = false;
-        if ($cache) {
+        if (defined("Yii") && $cache) {
             $data = Yii::app()->cache->get($url);
         }
         if ($data === false || isset($_GET["nocache"])) {
@@ -358,7 +365,7 @@ class Helper
                 echo "from scratch: $url $size <br/>";
             }
         }
-        if ($cache && $data && strlen($data) > 0) {
+        if (defined("Yii") && $cache && $data && strlen($data) > 0) {
             Yii::app()->cache->set($url, $data, CACHETIME);
         }
         return $data;
