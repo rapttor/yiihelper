@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="dee760f5-53dc-4396-b4a3-4331172b2f7a" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/helper.class.php" />
+        <option value="$PROJECT_DIR$/readme.md" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="22" />
+    <option name="width" value="1440" />
+    <option name="height" value="841" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Helper" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Helper" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="copyright.filetypes.PHP" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dee760f5-53dc-4396-b4a3-4331172b2f7a" name="Default" comment="" />
+      <created>1530388606441</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1530388606441</updated>
+      <workItem from="1530388607921" duration="790000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="790000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="22" width="1440" height="841" extended-state="0" />
+    <layout>
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24964234" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Helper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="18" column="10" lean-forward="true" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="10" />
+          <folding>
+            <element signature="e#17#48#0#PHP" expanded="false" />
+            <element signature="n#urlClean#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#showdebug#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#debug#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#header#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#checkEmail#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="e#1345#1559#0#PHP" expanded="false" />
+            <element signature="e#1457#1549#0#PHP" expanded="false" />
+            <element signature="n#imgurl#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#img#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#uploadDir#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="e#2000#2193#0#PHP" expanded="false" />
+            <element signature="e#2121#2193#0#PHP" expanded="false" />
+            <element signature="n#arrayValue#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#adLength#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#rand_date#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#domain#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#link#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#time_elapsed_string#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="e#3634#3843#0#PHP" expanded="false" />
+            <element signature="e#3853#4067#0#PHP" expanded="false" />
+            <element signature="e#3898#4057#0#PHP" expanded="false" />
+            <element signature="e#4001#4057#0#PHP" expanded="false" />
+            <element signature="n#ago#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#more#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#migrate#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="e#5609#6750#0#PHP" expanded="false" />
+            <element signature="e#6191#6329#0#PHP" expanded="false" />
+            <element signature="e#6372#6740#0#PHP" expanded="false" />
+            <element signature="e#6569#6725#0#PHP" expanded="false" />
+            <element signature="n#IconMenu#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#Icon#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#aVal#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#back#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#is_json#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#json_validate#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="e#8164#9619#0#PHP" expanded="false" />
+            <element signature="e#8205#8320#0#PHP" expanded="false" />
+            <element signature="e#8333#8449#0#PHP" expanded="false" />
+            <element signature="e#8462#8571#0#PHP" expanded="false" />
+            <element signature="e#8584#8716#0#PHP" expanded="false" />
+            <element signature="e#8729#8833#0#PHP" expanded="false" />
+            <element signature="e#8874#9004#0#PHP" expanded="false" />
+            <element signature="e#9045#9183#0#PHP" expanded="false" />
+            <element signature="e#9224#9360#0#PHP" expanded="false" />
+            <element signature="e#9373#9509#0#PHP" expanded="false" />
+            <element signature="e#9522#9609#0#PHP" expanded="false" />
+            <element signature="e#9629#9746#0#PHP" expanded="false" />
+            <element signature="n#jsonValue#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#jsonError#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="e#10106#11561#0#PHP" expanded="false" />
+            <element signature="e#10147#10262#0#PHP" expanded="false" />
+            <element signature="e#10275#10391#0#PHP" expanded="false" />
+            <element signature="e#10404#10513#0#PHP" expanded="false" />
+            <element signature="e#10526#10658#0#PHP" expanded="false" />
+            <element signature="e#10671#10775#0#PHP" expanded="false" />
+            <element signature="e#10816#10946#0#PHP" expanded="false" />
+            <element signature="e#10987#11125#0#PHP" expanded="false" />
+            <element signature="e#11166#11302#0#PHP" expanded="false" />
+            <element signature="e#11315#11451#0#PHP" expanded="false" />
+            <element signature="e#11464#11551#0#PHP" expanded="false" />
+            <element signature="n#send#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="e#11744#11893#0#PHP" expanded="false" />
+            <element signature="e#11972#12160#0#PHP" expanded="false" />
+            <element signature="e#12030#12150#0#PHP" expanded="false" />
+            <element signature="n#map#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#receive#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="e#12570#12643#0#PHP" expanded="false" />
+            <element signature="e#12652#12898#0#PHP" expanded="false" />
+            <element signature="e#12752#12888#0#PHP" expanded="false" />
+            <element signature="e#12907#13020#0#PHP" expanded="false" />
+            <element signature="n#curl#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="e#13102#13192#0#PHP" expanded="false" />
+            <element signature="e#13772#13934#0#PHP" expanded="false" />
+            <element signature="e#13860#13934#0#PHP" expanded="false" />
+            <element signature="n#exportModelAsJson#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#ellipsis#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#replaceAll#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#urlText#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#cors#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="e#14629#15006#0#PHP" expanded="false" />
+            <element signature="e#15087#15551#0#PHP" expanded="false" />
+            <element signature="n#sortItems#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="e#15713#15793#0#PHP" expanded="false" />
+            <element signature="e#15879#15959#0#PHP" expanded="false" />
+            <element signature="n#str2arr#0;n#Helper#0;n#!!top" expanded="false" />
+            <element signature="n#vardumper#0;n#Helper#0;n#!!top" expanded="false" />
+            <marker date="1530389274665" expanded="false" signature="984:1090" ph="..." />
+            <marker date="1530389274665" expanded="false" signature="1080:1086" ph=" " />
+            <marker date="1530389274665" expanded="false" signature="5242:5405" ph="..." />
+            <marker date="1530389274665" expanded="false" signature="5314:5327" ph="..." />
+            <marker date="1530389274665" expanded="false" signature="5475:5490" ph="..." />
+            <marker date="1530389274665" expanded="false" signature="7586:7611" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="150">
+            <caret line="6" column="14" lean-forward="false" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Y.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="6" column="20" lean-forward="false" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
