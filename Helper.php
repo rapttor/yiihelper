@@ -6,8 +6,9 @@ $HELPER = array(
 
 class Helper extends Controller
 {
-    public static function urlClean($str,$delimiter='-') {
-        $str=trim($str);
+    public static function urlClean($str, $delimiter = '-')
+    {
+        $str = trim($str);
         setlocale(LC_ALL, 'en_US.UTF8');
         $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
         $clean = preg_replace("/[^a-zA-Z0-9|+ -]/", '', $clean);
@@ -169,6 +170,7 @@ class Helper extends Controller
         </div><a href='javascript:;' title='$length / " . strlen($str) . "' style='cursor:pointer;' onclick='$(\"#$id .more\").toggle();'>[...]</a>";
     }
 
+    /** Yii helper migrate */
     public static function migrate($def, $db)
     {
         foreach ($def as $n => $t) {
@@ -477,7 +479,8 @@ class Helper extends Controller
         return $arr;
     }
 
-    public static function vardumper($object){
+    public static function vardumper($object)
+    {
         echo "<pre>";
         var_dump($object);
         die;
