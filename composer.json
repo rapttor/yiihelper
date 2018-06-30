@@ -42,7 +42,7 @@
   },
   "autoload": {
     "classmap" : [
-      "Helper.php"
+      "Helper/src/Helper.php"
     ]
   }
 }
