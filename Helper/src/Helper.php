@@ -480,4 +480,236 @@ class Helper
         var_dump($object);
         die;
     }
+
+    public static function SQL($sql, $action = "all" /* row/all */)
+    {
+        switch (strtoupper($action)) {
+            case "ALL":
+                return Yii::app()->db->createCommand($sql)->queryAll();
+            case "ROW":
+                return Yii::app()->db->createCommand($sql)->queryRow();
+            default:
+                return Yii::app()->db->createCommand($sql)->queryColumn();
+        }
+    }
+
+    /**
+     * Export the sql to a file
+     *
+     * @param bool $withData : self explainable
+     * @param bool $dropTable : Add to drop the table or not
+     * @param string $saveName : the saved file name
+     * @param string $savePath
+     *
+     * @return mixed
+     */
+    public static function DBExport($withData = true, $dropTable = false, $saveName = null, $savePath = false)
+    {
+        $pdo = Yii::app()->db->pdoInstance;
+        $mysql = '';
+        $tables = $pdo->query("show tables");
+        foreach ($tables as $value) {
+            $tableName = $value[0];
+            if ($dropTable === true) {
+                $mysql .= "DROP TABLE IF EXISTS `$tableName`;\n";
+            }
+            $tableQuery = $pdo->query("show create table `$tableName`");
+            $createSql = $tableQuery->fetch();
+            $mysql .= $createSql['Create Table'] . ";\r\n\r\n";
+            if ($withData != 0) {
+                $itemsQuery = $pdo->query("select * from `$tableName`");
+                $values = "";
+                $items = "";
+                while ($itemQuery = $itemsQuery->fetch(PDO::FETCH_ASSOC)) {
+                    $itemNames = array_keys($itemQuery);
+                    $itemNames = array_map("addslashes", $itemNames);
+                    $items = join('`,`', $itemNames);
+                    $itemValues = array_values($itemQuery);
+                    $itemValues = array_map("addslashes", $itemValues);
+                    $valueString = join("','", $itemValues);
+                    $valueString = "('" . $valueString . "'),";
+                    $values .= "\n" . $valueString;
+                }
+                if ($values != "") {
+                    $insertSql = "INSERT INTO `$tableName` (`$items`) VALUES" . rtrim($values, ",") . ";\n\r";
+                    $mysql .= $insertSql;
+                }
+            }
+
+        }
+
+        ob_start();
+        echo $mysql;
+        $content = ob_get_contents();
+        ob_end_clean();
+        $content = gzencode($content, 9);
+
+        if (is_null($saveName)) {
+            $saveName = urlencode(Yii::app()->name) . date('YmdHms') . ".sql.gz";
+        }
+
+        if ($savePath === false) {
+            header("Content-Type: application/force-download");
+            header("Content-Type: application/octet-stream");
+            header("Content-Type: application/download");
+            header("Content-Description: Download SQL Export");
+            header('Content-Disposition: attachment; filename=' . $saveName);
+            echo $content;
+
+        } else {
+            $filePath = $savePath ? $savePath . '/' . $saveName : $saveName;
+            file_put_contents($filePath, $content);
+        }
+    }
+
+    /**
+     * import sql from a *.sql file
+     * @param string $file : with the path and the file name
+     * @return mixed
+     */
+    public static function DBimport($file = '')
+    {
+        $pdo = Yii::app()->db->pdoInstance;
+        try {
+            if (file_exists($file)) {
+                $file = file_get_contents($file);
+                $file = rtrim($file);
+                $newStream = preg_replace_callback("/\((.*)\)/", create_function('$matches', 'return str_replace(";"," $$$ ",$matches[0]);'), $file);
+                $sqlArray = explode(";", $newStream);
+                foreach ($sqlArray as $value) {
+                    if (!empty($value)) {
+                        $sql = str_replace(" $$$ ", ";", $value) . ";";
+                        $pdo->exec($sql);
+                    }
+                }
+                return true;
+            }
+        } catch (PDOException $e) {
+            return $e->getMessage();
+            exit;
+        }
+    }
+
+    /**
+     * @param $app
+     * @param string $tables
+     */
+    public static function BackupTables($tables = '*')
+    {
+        //get all of the tables
+        if ($tables == '*') {
+            //$tables = Yii::app()->db->createCommand('SHOW TABLES')->queryColumn();
+            $tables = Y::SQL("SHOW TABLES", "columns");
+        } else {
+            $tables = is_array($tables) ? $tables : explode(',', $tables);
+        }
+
+        //cycle through
+        foreach ($tables as $table) {
+            $result = Y::SQL('SELECT * FROM ' . $table);
+            var_dump($result);
+            die;
+            $num_fields = mysql_num_fields($result);
+
+            $return .= 'DROP TABLE ' . $table . ';';
+            $row2 = mysql_fetch_row(mysql_query('SHOW CREATE TABLE ' . $table));
+            $return .= "\n\n" . $row2[1] . ";\n\n";
+
+            for ($i = 0; $i < $num_fields; $i++) {
+                while ($row = mysql_fetch_row($result)) {
+                    $return .= 'INSERT INTO ' . $table . ' VALUES(';
+                    for ($j = 0; $j < $num_fields; $j++) {
+                        $row[$j] = addslashes($row[$j]);
+                        $row[$j] = ereg_replace("\n", "\\n", $row[$j]);
+                        if (isset($row[$j])) {
+                            $return .= '"' . $row[$j] . '"';
+                        } else {
+                            $return .= '""';
+                        }
+                        if ($j < ($num_fields - 1)) {
+                            $return .= ',';
+                        }
+                    }
+                    $return .= ");\n";
+                }
+            }
+            $return .= "\n\n\n";
+        }
+
+        //save file
+        $handle = fopen('db-backup-' . time() . '-' . (md5(implode(',', $tables))) . '.sql', 'w+');
+        fwrite($handle, $return);
+        fclose($handle);
+    }
+
+
+    /**
+     * @param array $crons
+     * @return array - with same keys as $cron =false/no error exception/error
+     */
+    public static function CronJobs($crons = array())
+    {
+        /*
+            $cron=array(
+                every   :   (mins),
+                command :   (string),
+                notify  :   (email),
+                debug   :   (boolean),
+            );
+        */
+        $error = array();
+        foreach ($crons as $k => $cron) {
+            $error[$k] = null;
+            $minuteofday = date('H') * 60 + date('m');
+            if (isset($cron["every"]) && $cron["every"] % $minuteofday == 0)
+                try {
+                    Yii::app()->runController($cron["command"]);
+                } catch (Exception  $e) {
+                    $error[$k] = $e;
+                    if (isset($cron["notify"]))
+                        mail($cron["notify"], Yii::app()->name . ' Exception', var_export($e));
+                }
+        }
+        return $error;
+    }
+
+    /*
+    * migrations from code
+    */
+    public static function runMigrationTool($action = "migration", $param = "")
+    {
+        //$action = (isset($_GET["action"])) ? htmlspecialchars($_GET["action"], ENT_QUOTES) : "migrate";
+        // $param = (isset($_GET["param"])) ? htmlspecialchars($_GET["param"], ENT_QUOTES) : "--interactive=0";
+
+        ini_set('memory_limit', '-1');
+        $commandPath = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'commands';
+        $runner = new CConsoleCommandRunner();
+        $runner->addCommands($commandPath);
+        $commandPath = Yii::getFrameworkPath() . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR . 'commands';
+        $runner->addCommands($commandPath);
+        $args = array('yiic', $action, $param);
+        ob_start();
+        $runner->run($args);
+        echo htmlentities(ob_get_clean(), null, Yii::app()->charset);
+    }
+
+    public function actionYiic()
+    {
+        ini_set('memory_limit', '-1');
+        set_time_limit(1500);
+        $action = (isset($_GET["action"])) ? htmlspecialchars($_GET["action"], ENT_QUOTES) : "migrate";
+        Yii::import('application.commands.*');
+        $cmd = $action . "Command";
+        $command = new $cmd('admin', 'admin');
+        ob_start();
+        echo "<pre>";
+        $command->run(array());
+        echo htmlentities(ob_get_clean(), null, Yii::app()->charset);
+        //$this->render('index');
+    }
+
+    public function fieldExists($tableName, $tableField) {
+        $table = Yii::app()->db->schema->getTable($tableName);
+        return (isset($table->columns[$tableField]));
+    }
 }
