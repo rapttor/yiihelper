@@ -1,8 +1,6 @@
 <?php
 
-$HELPER = array(
-    "debug" => array()
-);
+namespace RapTToR;
 
 class Helper extends Controller
 {
@@ -15,21 +13,6 @@ class Helper extends Controller
         $clean = strtolower(trim($clean, '-'));
         $clean = preg_replace("/[|+ -]+/", $delimiter, $clean);
         return $clean;
-    }
-
-    public static function showdebug()
-    {
-        global $HELPER;
-        echo json_encode($HELPER);
-    }
-
-    public static function debug($message, $type = "info", $value = null)
-    {
-        global $HELPER;
-        $debug = array("message" => $message, "type" => $type, "value" => $value);
-        $HELPER["debug"][] = $debug;
-        $message = serialize($debug);
-        error_log($message);
     }
 
     public static function header($title, $icon = null)

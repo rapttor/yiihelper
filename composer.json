@@ -1,0 +1,48 @@
+{
+  "name": "rapttor/helper",
+  "description": "General helper class",
+  "keywords": ["php", "helper"],
+  "homepage": "http://www.rapttor.com/",
+  "type": "library",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Emir Kurtovic",
+      "email": "rapttor@gmail.com",
+      "homepage": "http://www.rapttor.com/",
+      "role": "Founder and project lead"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/rapttor/helper/issues?state=open",
+    "wiki": "https://github.com/rapttor/helper/wiki",
+    "source": "https://github.com/rapttor/helper.git"
+  },
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "rapttor/helper",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/rapttor/helper.git",
+          "type": "git",
+          "reference": "master"
+        },
+        "autoload": {
+          "psr-0" : {
+            "RapTToR\\Helper" : "src"
+          }
+        }
+      }
+    }
+  ],
+  "require": {
+    "php": ">=4.5.0"
+  },
+  "autoload": {
+    "classmap" : [
+      "Helper.php"
+    ]
+  }
+}
