@@ -58,7 +58,7 @@ class Helper
     {
         $base = "";
         if (isset($_SERVER["HTTP_HOST"])) {
-            $base = $_SERVER['DOCUMENT_ROOT'] . "/" . Yii::app()->baseUrl;
+            $base = $_SERVER['DOCUMENT_ROOT'] . "/" . (defined("Yii")?Yii::app()->baseUrl:"");
         } else {
             if (defined("Yii")) $base = Yii::getPathOfAlias('application');
         }
@@ -199,7 +199,8 @@ class Helper
     {
         $result = "";
         if (!isset($i["value"]) && isset($i["url"])) $i["value"] = $i["url"];
-        if (isset($i["value"]) && isset($i["ion"]) && isset($i["title"])) $result = "<div class='icontext' onclick='window.location.href=\"" . Yii::app()->createUrl($i["value"]) . "\"'>
+        if (isset($i["value"]) && isset($i["ion"]) && isset($i["title"])) $result = "<div class='icontext' onclick='window.location.href=\"" .
+            (defined("Yii")?Yii::app()->createUrl($i["value"]):$i["value"]) . "\"'>
         <i class='{$i["ion"]}'></i>
         <small>{$i["title"]}</small>
         </div>";
@@ -213,9 +214,11 @@ class Helper
 
     }
 
-    public static function back()
+    public static function back($title="Back")
     {
-        return "<div class='clearfix'></div><a style='clear:both;margin:10px 0;' class='btn btn-primary' onclick='history.go(-1);'><i class='fa fa-caret-left'></i> " . Yii::t("main", "Back") . "</a><div class='clearfix'></div>";
+        if (defined("Yii")) $title=Yii::t("main", $title);
+        return "<div class='clearfix'></div><a style='clear:both;margin:10px 0;' class='btn btn-primary' onclick='history.go(-1);'><i class='fa fa-caret-left'></i> " .
+            $title . "</a><div class='clearfix'></div>";
     }
 
     public static function is_json($string)
