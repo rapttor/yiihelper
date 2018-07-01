@@ -1,9 +1,15 @@
-**Helper class**
+Yii Helper class
+=========================
 
-*Helper Class*
-    `General helper class`
+Features
+--------
+
+* Simplify your life working with Yii1.x rest apps
+* PSR-4 autoloading compliant structure
+* Unit-Testing with PHPUnit [in progress]
     
-**Install**
+Install
+-------
 
       "require": {
         "rapttor/helper": "dev-master"
