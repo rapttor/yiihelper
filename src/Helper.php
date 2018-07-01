@@ -1,10 +1,10 @@
-<?php namespace RapTToR\Helper;
+<?php namespace RapTToR;
 
 /**
  * @author rapttor
  */
 
-class Helper
+class Helper extends \Controller
 {
     public static function urlClean($str, $delimiter = '-')
     {
@@ -19,7 +19,7 @@ class Helper
 
     public static function header($title, $icon = null)
     {
-        if (defined("Yii")) $title = Yii::t("main", $title);
+        if (defined("Yii")) $title = \Yii::t("main", $title);
         return '<h1 class="pull-right"><i class="icons icon-' . $icon . ' pull-right"></i>
             ' . $title . ' &nbsp;</h1>';
     }
@@ -29,7 +29,7 @@ class Helper
         $disposable_mail = array();
         if (is_null($disposable)) {
             $base = "";
-            if (defined("Yii")) $base = Yii::app()->getBasePath();
+            if (defined("Yii")) $base = \Yii::app()->getBasePath();
             $disposable_mail = file_get_contents($base . "/../protected/modules/email/disposable-email.csv");
             $disposable_mail = explode(",", $disposable_mail);
         }
@@ -45,7 +45,7 @@ class Helper
     public static function imgurl($cat = null, $id = null)
     {
         $base = "";
-        if (defined("Yii")) $base = Yii::app()->baseUrl;
+        if (defined("Yii")) $base = \Yii::app()->baseUrl;
         return $base . "/uploads/" . $cat . "/" . $id . ".jpg";
     }
 
@@ -58,9 +58,9 @@ class Helper
     {
         $base = "";
         if (isset($_SERVER["HTTP_HOST"])) {
-            $base = $_SERVER['DOCUMENT_ROOT'] . "/" . (defined("Yii")?Yii::app()->baseUrl:"");
+            $base = $_SERVER['DOCUMENT_ROOT'] . "/" . (defined("Yii")?\Yii::app()->baseUrl:"");
         } else {
-            if (defined("Yii")) $base = Yii::getPathOfAlias('application');
+            if (defined("Yii")) $base = \Yii::getPathOfAlias('application');
         }
         return $base . "/uploads/" . (is_null($cat) ? "" : $cat . '/');
     }
@@ -178,7 +178,7 @@ class Helper
             if (isset($t["titlevalues"])) foreach ($t["titlevalues"] as $u => $f) {
                 $i = array("title" => $u);
                 @$db->insert($n, $i);
-                $pid = Yii::app()->db->getLastInsertId();
+                $pid = \Yii::app()->db->getLastInsertId();
                 foreach ($f as $i) {
                     $tv = array("parent_id" => $pid, "title" => trim($i));
                     @$db->insert($n, $tv);
@@ -200,7 +200,7 @@ class Helper
         $result = "";
         if (!isset($i["value"]) && isset($i["url"])) $i["value"] = $i["url"];
         if (isset($i["value"]) && isset($i["ion"]) && isset($i["title"])) $result = "<div class='icontext' onclick='window.location.href=\"" .
-            (defined("Yii")?Yii::app()->createUrl($i["value"]):$i["value"]) . "\"'>
+            (defined("Yii")?\Yii::app()->createUrl($i["value"]):$i["value"]) . "\"'>
         <i class='{$i["ion"]}'></i>
         <small>{$i["title"]}</small>
         </div>";
@@ -216,7 +216,7 @@ class Helper
 
     public static function back($title="Back")
     {
-        if (defined("Yii")) $title=Yii::t("main", $title);
+        if (defined("Yii")) $title=\Yii::t("main", $title);
         return "<div class='clearfix'></div><a style='clear:both;margin:10px 0;' class='btn btn-primary' onclick='history.go(-1);'><i class='fa fa-caret-left'></i> " .
             $title . "</a><div class='clearfix'></div>";
     }
@@ -336,13 +336,13 @@ class Helper
         }
         header('Content-Type: application/json');
         echo $json;
-        if (defined("Yii")) foreach (Yii::app()->log->routes as $route) {
+        if (defined("Yii")) foreach (\Yii::app()->log->routes as $route) {
             if ($route instanceof CWebLogRoute) {
                 $route->enabled = false; // disable any weblogroutes
             }
         }
         if ($die) {
-            if (defined("Yii")) Yii::app()->end();
+            if (defined("Yii")) \Yii::app()->end();
             die;
         }
     }
@@ -359,7 +359,7 @@ class Helper
         if (!is_null($params)) $url = self::map($url, $params);
         $data = false;
         if (defined("Yii") && $cache) {
-            $data = Yii::app()->cache->get($url);
+            $data = \Yii::app()->cache->get($url);
         }
         if ($data === false || isset($_GET["nocache"])) {
             $data = self::curl($url);
@@ -369,7 +369,7 @@ class Helper
             }
         }
         if (defined("Yii") && $cache && $data && strlen($data) > 0) {
-            Yii::app()->cache->set($url, $data, CACHETIME);
+            \Yii::app()->cache->set($url, $data, CACHETIME);
         }
         return $data;
     }
@@ -485,11 +485,11 @@ class Helper
     {
         switch (strtoupper($action)) {
             case "ALL":
-                return Yii::app()->db->createCommand($sql)->queryAll();
+                return \Yii::app()->db->createCommand($sql)->queryAll();
             case "ROW":
-                return Yii::app()->db->createCommand($sql)->queryRow();
+                return \Yii::app()->db->createCommand($sql)->queryRow();
             default:
-                return Yii::app()->db->createCommand($sql)->queryColumn();
+                return \Yii::app()->db->createCommand($sql)->queryColumn();
         }
     }
 
@@ -505,7 +505,7 @@ class Helper
      */
     public static function DBExport($withData = true, $dropTable = false, $saveName = null, $savePath = false)
     {
-        $pdo = Yii::app()->db->pdoInstance;
+        $pdo = \Yii::app()->db->pdoInstance;
         $mysql = '';
         $tables = $pdo->query("show tables");
         foreach ($tables as $value) {
@@ -545,7 +545,7 @@ class Helper
         $content = gzencode($content, 9);
 
         if (is_null($saveName)) {
-            $saveName = urlencode(Yii::app()->name) . date('YmdHms') . ".sql.gz";
+            $saveName = urlencode(\Yii::app()->name) . date('YmdHms') . ".sql.gz";
         }
 
         if ($savePath === false) {
@@ -569,7 +569,7 @@ class Helper
      */
     public static function DBimport($file = '')
     {
-        $pdo = Yii::app()->db->pdoInstance;
+        $pdo = \Yii::app()->db->pdoInstance;
         try {
             if (file_exists($file)) {
                 $file = file_get_contents($file);
@@ -598,15 +598,15 @@ class Helper
     {
         //get all of the tables
         if ($tables == '*') {
-            //$tables = Yii::app()->db->createCommand('SHOW TABLES')->queryColumn();
-            $tables = Y::SQL("SHOW TABLES", "columns");
+            //$tables = \Yii::app()->db->createCommand('SHOW TABLES')->queryColumn();
+            $tables = \RapTToR\Helper::SQL("SHOW TABLES", "columns");
         } else {
             $tables = is_array($tables) ? $tables : explode(',', $tables);
         }
 
         //cycle through
         foreach ($tables as $table) {
-            $result = Y::SQL('SELECT * FROM ' . $table);
+            $result = \RapTToR\Helper::SQL('SELECT * FROM ' . $table);
             var_dump($result);
             die;
             $num_fields = mysql_num_fields($result);
@@ -663,11 +663,11 @@ class Helper
             $minuteofday = date('H') * 60 + date('m');
             if (isset($cron["every"]) && $cron["every"] % $minuteofday == 0)
                 try {
-                    Yii::app()->runController($cron["command"]);
+                    \Yii::app()->runController($cron["command"]);
                 } catch (Exception  $e) {
                     $error[$k] = $e;
                     if (isset($cron["notify"]))
-                        mail($cron["notify"], Yii::app()->name . ' Exception', var_export($e));
+                        mail($cron["notify"], \Yii::app()->name . ' Exception', var_export($e));
                 }
         }
         return $error;
@@ -682,15 +682,15 @@ class Helper
         // $param = (isset($_GET["param"])) ? htmlspecialchars($_GET["param"], ENT_QUOTES) : "--interactive=0";
 
         ini_set('memory_limit', '-1');
-        $commandPath = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'commands';
+        $commandPath = \Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'commands';
         $runner = new CConsoleCommandRunner();
         $runner->addCommands($commandPath);
-        $commandPath = Yii::getFrameworkPath() . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR . 'commands';
+        $commandPath = \Yii::getFrameworkPath() . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR . 'commands';
         $runner->addCommands($commandPath);
         $args = array('yiic', $action, $param);
         ob_start();
         $runner->run($args);
-        echo htmlentities(ob_get_clean(), null, Yii::app()->charset);
+        echo htmlentities(ob_get_clean(), null, \Yii::app()->charset);
     }
 
     public function actionYiic()
@@ -698,18 +698,18 @@ class Helper
         ini_set('memory_limit', '-1');
         set_time_limit(1500);
         $action = (isset($_GET["action"])) ? htmlspecialchars($_GET["action"], ENT_QUOTES) : "migrate";
-        Yii::import('application.commands.*');
+        \Yii::import('application.commands.*');
         $cmd = $action . "Command";
         $command = new $cmd('admin', 'admin');
         ob_start();
         echo "<pre>";
         $command->run(array());
-        echo htmlentities(ob_get_clean(), null, Yii::app()->charset);
+        echo htmlentities(ob_get_clean(), null, \Yii::app()->charset);
         //$this->render('index');
     }
 
     public function fieldExists($tableName, $tableField) {
-        $table = Yii::app()->db->schema->getTable($tableName);
+        $table = \Yii::app()->db->schema->getTable($tableName);
         return (isset($table->columns[$tableField]));
     }
 }
