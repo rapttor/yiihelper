@@ -185,7 +185,7 @@ class Helper extends \Controller
                 }
 
             }
-            if (isset($t["singlefield"])) foreach ($t["titles"] as $u => $f) {
+            if (isset($t["singlefield"])) foreach ($t["singlefield"] as $u => $f) {
                 if (is_numeric($u)) $u = "title";
                 foreach ($f as $i) {
                     $tv = array($u => trim($i));
