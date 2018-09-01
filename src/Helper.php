@@ -4,6 +4,8 @@
  * @author rapttor
  */
 
+\Yii::import('application.components.*');
+
 class Helper extends \Controller
 {
     public static function urlClean($str, $delimiter = '-')
@@ -683,7 +685,7 @@ class Helper extends \Controller
     /*
     * migrations from code
     */
-    public static function runMigrationTool($action = "migration", $param = "")
+    public static function runMigrationTool($action = "migrate", $param = "")
     {
         //$action = (isset($_GET["action"])) ? htmlspecialchars($_GET["action"], ENT_QUOTES) : "migrate";
         // $param = (isset($_GET["param"])) ? htmlspecialchars($_GET["param"], ENT_QUOTES) : "--interactive=0";
