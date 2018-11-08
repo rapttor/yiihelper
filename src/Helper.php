@@ -6,10 +6,8 @@
 
 \Yii::import('application.components.*');
 
-class Helper extends \Controller
-{
-    public static function urlClean($str, $delimiter = '-')
-    {
+class Helper extends \Controller {
+    public static function urlClean($str, $delimiter = '-') {
         $str = trim($str);
         setlocale(LC_ALL, 'en_US.UTF8');
         $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
@@ -19,15 +17,13 @@ class Helper extends \Controller
         return $clean;
     }
 
-    public static function header($title, $icon = null)
-    {
+    public static function header($title, $icon = null) {
         if (defined("Yii")) $title = \Yii::t("main", $title);
         return '<h1 class="pull-right"><i class="icons icon-' . $icon . ' pull-right"></i>
             ' . $title . ' &nbsp;</h1>';
     }
 
-    public static function checkEmail($mail, $disposable = null)
-    {
+    public static function checkEmail($mail, $disposable = null) {
         $disposable_mail = array();
         if (is_null($disposable)) {
             $base = "";
@@ -44,20 +40,17 @@ class Helper extends \Controller
         return false;
     }
 
-    public static function imgurl($cat = null, $id = null)
-    {
+    public static function imgurl($cat = null, $id = null) {
         $base = "";
         if (defined("Yii")) $base = \Yii::app()->baseUrl;
         return $base . "/uploads/" . $cat . "/" . $id . ".jpg";
     }
 
-    public static function img($cat = null, $id = null, $class = "img-responsive")
-    {
+    public static function img($cat = null, $id = null, $class = "img-responsive") {
         return "<img src='" . self::imgurl($cat, $id) . "'  class='$class'>";
     }
 
-    public static function uploadDir($cat = null)
-    {
+    public static function uploadDir($cat = null) {
         $base = "";
         if (isset($_SERVER["HTTP_HOST"])) {
             $base = $_SERVER['DOCUMENT_ROOT'] . "/" . (defined("Yii") ? \Yii::app()->baseUrl : "");
@@ -67,14 +60,12 @@ class Helper extends \Controller
         return $base . "/uploads/" . (is_null($cat) ? "" : $cat . '/');
     }
 
-    public static function arrayValue($a, $i, $default = null)
-    {
+    public static function arrayValue($a, $i, $default = null) {
         return (is_array($a) && isset($a[$i])) ? $a[$i] : $default;
     }
 
 
-    public static function rand_date($min_date = "01-01-2016", $max_date = "31-12-2016")
-    {
+    public static function rand_date($min_date = "01-01-2016", $max_date = "31-12-2016") {
         /* Gets 2 dates as string, earlier and later date.
            Returns date in between them.
         */
@@ -87,20 +78,17 @@ class Helper extends \Controller
         return date('Y-m-d H:i:s', $rand_epoch);
     }
 
-    public static function domain($str, $dom = "")
-    {
+    public static function domain($str, $dom = "") {
         return (strpos($str, "http") === false) ? "http://" . $str : $str;
     }
 
-    public static function link($url, $text = null, $options = 'target="_blank"')
-    {
+    public static function link($url, $text = null, $options = 'target="_blank"') {
         if (is_null($text)) $text = $url;
         $link = self::domain($url);
         return "<a href='$link' $options>$text</a>";
     }
 
-    public static function time_elapsed_string($datetime, $full = false)
-    {
+    public static function time_elapsed_string($datetime, $full = false) {
         $now = new DateTime;
         $ago = new DateTime($datetime, new DateTimeZone(date_default_timezone_get()));
         $diff = $now->diff($ago);
@@ -129,8 +117,7 @@ class Helper extends \Controller
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
 
-    public static function ago($tm, $rcs = 0)
-    {
+    public static function ago($tm, $rcs = 0) {
         if (is_string($tm)) $tm = strtotime($tm);
         $cur_tm = time();
         $dif = $cur_tm - $tm;
@@ -149,8 +136,7 @@ class Helper extends \Controller
         return $x;
     }
 
-    public static function more($str, $length = 200, $more = "<!-- more -->")
-    {
+    public static function more($str, $length = 200, $more = "<!-- more -->") {
         if (strlen($str) < $length)
             return $str;
 
@@ -162,8 +148,7 @@ class Helper extends \Controller
     }
 
     /** Yii helper migrate */
-    public static function migrate($def, $db)
-    {
+    public static function migrate($def, $db) {
         foreach ($def as $n => $t) {
             $n = trim($n);
             if (!isset($t["fields"]) && !isset($t["index"]))
@@ -197,15 +182,13 @@ class Helper extends \Controller
         }
     }
 
-    public static function IconMenu($menu)
-    {
+    public static function IconMenu($menu) {
         $result = "";
         foreach ($menu as $m) $result .= self::Icon($m);
         return $result;
     }
 
-    public static function Icon($i)
-    {
+    public static function Icon($i) {
         $result = "";
         if (!isset($i["value"]) && isset($i["url"])) $i["value"] = $i["url"];
         if (isset($i["value"]) && isset($i["ion"]) && isset($i["title"])) $result = "<div class='icontext' onclick='window.location.href=\"" .
@@ -217,28 +200,24 @@ class Helper extends \Controller
         return $result;
     }
 
-    public static function aVal($a, $k, $d = "")
-    {
+    public static function aVal($a, $k, $d = "") {
         return (is_array($a) && isset($a[$k])) ? $a[$k] : $d;
 
     }
 
-    public static function back($title = "Back")
-    {
+    public static function back($title = "Back") {
         if (defined("Yii")) $title = \Yii::t("main", $title);
         return "<div class='clearfix'></div><a style='clear:both;margin:10px 0;' class='btn btn-primary' onclick='history.go(-1);'><i class='fa fa-caret-left'></i> " .
             $title . "</a><div class='clearfix'></div>";
     }
 
-    public static function is_json($string)
-    {
+    public static function is_json($string) {
         return ((is_string($string) &&
             (is_object(json_decode($string)) ||
                 is_array(json_decode($string))))) ? true : false;
     }
 
-    public static function json_validate($string)
-    {
+    public static function json_validate($string) {
         // decode the JSON data
         $result = json_decode($string);
 
@@ -288,15 +267,13 @@ class Helper extends \Controller
         return $result;
     }
 
-    public static function jsonValue($arr, $key, $def)
-    {
+    public static function jsonValue($arr, $key, $def) {
         $value = $def;
         if (isset($arr[$key]) && strlen(trim(strip_tags($arr[$key]))) > 2) $value = json_decode($arr[$key]);
         return $value;
     }
 
-    public static function jsonError()
-    {
+    public static function jsonError() {
         $error = null;
         switch (json_last_error()) {
             case JSON_ERROR_NONE:
@@ -336,8 +313,7 @@ class Helper extends \Controller
         return $error;
     }
 
-    public static function send($data, $cache = false, $die = true)
-    {
+    public static function send($data, $cache = false, $die = true) {
         $json = (!self::is_json($data)) ? json_encode($data) : $data;
         if (!$cache) {
             header('Cache-Control: no-cache, must-revalidate');
@@ -356,15 +332,13 @@ class Helper extends \Controller
         }
     }
 
-    public static function map($str, $params)
-    {
+    public static function map($str, $params) {
         foreach ($params as $key => $value)
             $str = str_replace($key, $value, $str);
         return $str;
     }
 
-    public static function receive($url, $params = null, $cache = true)
-    { // receive json
+    public static function receive($url, $params = null, $cache = true) { // receive json
         if (!is_null($params)) $url = self::map($url, $params);
         $data = false;
         if (defined("Yii") && $cache) {
@@ -383,8 +357,7 @@ class Helper extends \Controller
         return $data;
     }
 
-    public static function curl($url)
-    {
+    public static function curl($url) {
         if (!function_exists('curl_version')) {
             exit ("Enable cURL in PHP");
         }
@@ -408,30 +381,25 @@ class Helper extends \Controller
         }
     }
 
-    public static function exportModelAsJson($data)
-    {
+    public static function exportModelAsJson($data) {
         return $json = (!self::is_json($data)) ? json_encode($data) : $data;
     }
 
-    public static function ellipsis($text, $length)
-    {
+    public static function ellipsis($text, $length) {
         return (mb_strlen($text) > $length) ? mb_substr($text, 0, $length) . '... ' : $text;
     }
 
-    public static function replaceAll($what, $with, $str)
-    {
+    public static function replaceAll($what, $with, $str) {
         while (stripos($str, $what)) $str = str_ireplace($what, $with, $str);
         return $str;
     }
 
-    public static function urlText($str)
-    {
+    public static function urlText($str) {
         return self::replaceAll('__', '_', preg_replace('/[^\w]/', '_', $str));
 
     }
 
-    public static function cors()
-    {
+    public static function cors() {
 
         // Allow from any origin
         if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -456,8 +424,7 @@ class Helper extends \Controller
         }
     }
 
-    public static function sortItems($array, $key, $desc = false)
-    {
+    public static function sortItems($array, $key, $desc = false) {
         $sorter = array();
         $ret = array();
         reset($array);
@@ -474,8 +441,7 @@ class Helper extends \Controller
         return $array;
     }
 
-    public static function str2arr($str)
-    {
+    public static function str2arr($str) {
         $arr = array();
         if (is_string($str)) $arr = explode(',', $str);
         foreach ($arr as $key => $value) $arr[$key] = trim($value);
@@ -483,15 +449,13 @@ class Helper extends \Controller
         return $arr;
     }
 
-    public static function vardumper($object)
-    {
+    public static function vardumper($object) {
         echo "<pre>";
         var_dump($object);
         die;
     }
 
-    public static function SQL($sql, $action = "all" /* row/all */)
-    {
+    public static function SQL($sql, $action = "all" /* row/all */) {
         switch (strtoupper($action)) {
             case "ALL":
                 return \Yii::app()->db->createCommand($sql)->queryAll();
@@ -512,8 +476,7 @@ class Helper extends \Controller
      *
      * @return mixed
      */
-    public static function DBExport($withData = true, $dropTable = false, $saveName = null, $savePath = false)
-    {
+    public static function DBExport($withData = true, $dropTable = false, $saveName = null, $savePath = false) {
         $pdo = \Yii::app()->db->pdoInstance;
         $mysql = '';
         $tables = $pdo->query("show tables");
@@ -576,8 +539,7 @@ class Helper extends \Controller
      * @param string $file : with the path and the file name
      * @return mixed
      */
-    public static function DBimport($file = '')
-    {
+    public static function DBimport($file = '') {
         $pdo = \Yii::app()->db->pdoInstance;
         try {
             if (file_exists($file)) {
@@ -603,8 +565,7 @@ class Helper extends \Controller
      * @param $app
      * @param string $tables
      */
-    public static function BackupTables($tables = '*')
-    {
+    public static function BackupTables($tables = '*') {
         //get all of the tables
         if ($tables == '*') {
             //$tables = \Yii::app()->db->createCommand('SHOW TABLES')->queryColumn();
@@ -656,8 +617,7 @@ class Helper extends \Controller
      * @param array $crons
      * @return array - with same keys as $cron =false/no error exception/error
      */
-    public static function CronJobs($crons = array())
-    {
+    public static function CronJobs($crons = array()) {
         /*
             $cron=array(
                 every   :   (mins),
@@ -685,8 +645,7 @@ class Helper extends \Controller
     /*
     * migrations from code
     */
-    public static function runMigrationTool($action = "migrate", $param = "")
-    {
+    public static function runMigrationTool($action = "migrate", $param = "") {
         //$action = (isset($_GET["action"])) ? htmlspecialchars($_GET["action"], ENT_QUOTES) : "migrate";
         // $param = (isset($_GET["param"])) ? htmlspecialchars($_GET["param"], ENT_QUOTES) : "--interactive=0";
 
@@ -702,8 +661,7 @@ class Helper extends \Controller
         echo htmlentities(ob_get_clean(), null, \Yii::app()->charset);
     }
 
-    public function actionYiic()
-    {
+    public function actionYiic() {
         ini_set('memory_limit', '-1');
         set_time_limit(1500);
         $action = (isset($_GET["action"])) ? htmlspecialchars($_GET["action"], ENT_QUOTES) : "migrate";
@@ -717,23 +675,102 @@ class Helper extends \Controller
         //$this->render('index');
     }
 
-    public function fieldExists($tableName, $tableField)
-    {
+    public function fieldExists($tableName, $tableField) {
         $table = \Yii::app()->db->schema->getTable($tableName);
         return (isset($table->columns[$tableField]));
     }
 
-    public static function validateDate($date, $format = 'Y-m-d')
-    {
+    public static function validateDate($date, $format = 'Y-m-d') {
         $d = DateTime::createFromFormat($format, $date);
         // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
         return $d && $d->format($format) === $date;
     }
 
-    public static function validateTime($date, $format = 'Y-m-d H:i:s')
-    {
+    public static function validateTime($date, $format = 'Y-m-d H:i:s') {
         $d = DateTime::createFromFormat($format, $date);
         // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
         return $d && $d->format($format) === $date;
+    }
+
+    public function canEdit($status = 20) {
+        return (!(Yii::app()->user->isGuest) && Yii::app()->user->status >= $status);
+    }
+
+    public function btnEdit($obj, $params = array()) {
+        $objClass = get_class($obj);
+        $class = (isset($params["class"])) ? $params["class"] : "pull-right";
+        $check = (isset($params["check"])) ? $params["check"] : true;
+        $showTitle = (isset($params["btnTitle"])) ? true : false;
+        $canEdit = true;
+        if ($check) $canEdit = $this->canEdit();
+        if ($canEdit) {
+            $title = false;
+            $url = $this->linkEdit($obj);
+            if (is_object($obj)) {
+                $title = ((property_exists($obj, "title")) ? $obj->title : $objClass);
+            } else if (is_array($obj) && isset($obj["class"])) {
+                $title = $obj["class"];
+            } else if (is_string($obj)) $title = $obj;
+            $title = (isset($params["btnTitle"])) ? $params["btnTitle"] : $title;
+            if (!$showTitle) $title = "";
+            return '<a class="btn btn-edit btn-link ' . $class . '" href="' . $url . '">
+                    <i class="la la-pencil"></i> 
+                    <span class="title">' . $title . '</span>
+                </a>';
+        }
+        return "";
+    }
+
+    public function btnView($obj, $class = "pull-right", $check = true) {
+        $url = $this->linkView($obj);
+        $title = (property_exists($obj, "title")) ? $obj->title : get_class($obj);
+        return '<a class="btn btn-edit btn-link ' . $class . '" href="' . $url . '">
+                    <i class="la la-pencil"></i> 
+                    <span class="title">' . $title . '</span>
+                </a>';
+
+    }
+
+    public function btnAdd($type, $params) {
+        $class = (isset($params["class"])) ? $params["class"] : "pull-right";
+        $check = (isset($params["check"])) ? $params["check"] : true;
+        $title = (isset($params["btnTitle"])) ? $params["btnTitle"] : 'Add ' . $type;
+        $canEdit = true;
+        if ($check) $canEdit = $this->canEdit();
+        if ($canEdit) {
+            $url = $this->linkAdd($type, $params);
+            return '<a title="' . $title . '" class="btn btn-edit btn-link ' . $class . '" href="' . $url . '">
+                    <i class="la la-plus"></i> 
+                    <span class="title">' . $title . '</span>
+                </a>';
+        }
+        return "";
+    }
+
+    public function linkEdit($obj) {
+        if (is_array($obj) && isset($obj["class"]) && isset($obj["id"])) {
+            $section = $obj["class"];
+            $id = $obj["id"];
+        } else {
+            $section = strtolower(get_class($obj));
+            $id = $obj->id;
+        }
+        if (substr($section, strlen($section) - 1, 1) == "2")
+            $section = substr($section, 0, strlen($section) - 1);
+        $url = Yii::app()->createUrl($section . '/update', array("id" => $id));
+        return $url;
+    }
+
+    public function linkAdd($type, $params=array()) {
+        $url = Yii::app()->createUrl($type . '/create', $params);
+        return $url;
+    }
+
+    public function linkView($obj) {
+        $section = strtolower(get_class($obj));
+        if (substr($section, strlen($section) - 1, 1) == "2")
+            $section = substr($section, 0, strlen($section) - 1);
+        $url = Yii::app()->createUrl($section . '/view', array("id" => $obj->id));
+        return $url;
     }
 }
