@@ -6,6 +6,8 @@
 
 \Yii::import('application.components.*');
 
+$HELPER = array();
+
 class Helper extends \Controller {
     public static function urlClean($str, $delimiter = '-') {
         $str = trim($str);
@@ -761,7 +763,7 @@ class Helper extends \Controller {
         return $url;
     }
 
-    public function linkAdd($type, $params=array()) {
+    public function linkAdd($type, $params = array()) {
         $url = Yii::app()->createUrl($type . '/create', $params);
         return $url;
     }
@@ -772,5 +774,12 @@ class Helper extends \Controller {
             $section = substr($section, 0, strlen($section) - 1);
         $url = Yii::app()->createUrl($section . '/view', array("id" => $obj->id));
         return $url;
+    }
+
+    public static function debug($message, $type = "info", $value = null) {
+        global $HELPER;
+        $debug = array("message" => $message, "type" => $type, "value" => $value);
+        $HELPER["debug"][] = $debug;
+        error_log(json_encode($debug));
     }
 }
