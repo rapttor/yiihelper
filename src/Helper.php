@@ -216,7 +216,7 @@ class Helper extends \Controller {
     public static function is_json($string) {
         return ((is_string($string) &&
             (is_object(json_decode($string)) ||
-                is_array(json_decode($string))))) ? true : false;
+                is_array(json_decode($string, true))))) ? true : false;
     }
 
     public static function json_validate($string) {
