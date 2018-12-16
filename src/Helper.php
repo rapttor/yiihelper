@@ -11,6 +11,139 @@ require __DIR__ . '/protected/vendor/autoload.php';
 $RapTToR_HELPER = array();
 
 class Helper extends \Controller {
+
+    public static function mime_content_type($filename) {
+
+        $mime_types = array(
+
+            'txt' => 'text/plain',
+            'htm' => 'text/html',
+            'html' => 'text/html',
+            'php' => 'text/html',
+            'css' => 'text/css',
+            'js' => 'application/javascript',
+            'json' => 'application/json',
+            'xml' => 'application/xml',
+            'swf' => 'application/x-shockwave-flash',
+            'flv' => 'video/x-flv',
+
+            // images
+            'png' => 'image/png',
+            'jpe' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'jpg' => 'image/jpeg',
+            'gif' => 'image/gif',
+            'bmp' => 'image/bmp',
+            'ico' => 'image/vnd.microsoft.icon',
+            'tiff' => 'image/tiff',
+            'tif' => 'image/tiff',
+            'svg' => 'image/svg+xml',
+            'svgz' => 'image/svg+xml',
+
+            // archives
+            'zip' => 'application/zip',
+            'rar' => 'application/x-rar-compressed',
+            'exe' => 'application/x-msdownload',
+            'msi' => 'application/x-msdownload',
+            'cab' => 'application/vnd.ms-cab-compressed',
+
+            // audio/video
+            'mp3' => 'audio/mpeg',
+            'qt' => 'video/quicktime',
+            'mov' => 'video/quicktime',
+
+            // adobe
+            'pdf' => 'application/pdf',
+            'psd' => 'image/vnd.adobe.photoshop',
+            'ai' => 'application/postscript',
+            'eps' => 'application/postscript',
+            'ps' => 'application/postscript',
+
+            // ms office
+            'doc' => 'application/msword',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'rtf' => 'application/rtf',
+            'xls' => 'application/vnd.ms-excel',
+            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'ppt' => 'application/vnd.ms-powerpoint',
+
+            // open office
+            'odt' => 'application/vnd.oasis.opendocument.text',
+            'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+        );
+
+        $ext = strtolower(array_pop(explode('.',$filename)));
+        if (array_key_exists($ext, $mime_types)) {
+            return $mime_types[$ext];
+        }
+        elseif (function_exists('finfo_open')) {
+            $finfo = finfo_open(FILEINFO_MIME);
+            $mimetype = finfo_file($finfo, $filename);
+            finfo_close($finfo);
+            return $mimetype;
+        }
+        else {
+            return 'application/octet-stream';
+        }
+    }
+
+    public static function timePassed($time) {
+        if (is_null($time) || $time=="") return "";
+        if (is_string($time)) $time=strtotime($time);
+        $time = time() - $time; // to get the time since that moment
+        $time = ($time<1)? 1 : $time;
+        $intPlural = 0;
+
+        $tokens = array (
+            31536000 => 'year',
+            2592000 => 'month',
+            604800 => 'week',
+            86400 => 'day',
+            3600 => 'hour',
+            60 => 'minute',
+            1 => 'second'
+        );
+
+        $arTimeUnits = array(
+            'year'=> ['år', 'år'],
+            'month'=> ['måmad', 'månader'],
+            'week' => ['vecka', 'veckor'],
+            'day'=> ['dag', 'dagar'],
+            'hour' => ['timma', 'timmar'],
+            'minute'=> ['minut', 'minuter'],
+            'second' => ['sekund', 'sekunder']
+        );
+
+        foreach ($tokens as $unit => $text) {
+            if ($time < $unit) {
+                continue;
+            } else {
+                $numberOfUnits = floor($time / $unit);
+
+                if ($numberOfUnits > 1) {
+                    $intPlural=1;
+                }
+
+                return $numberOfUnits . ' ' . $arTimeUnits[$text][$intPlural];
+                // return $numberOfUnits . ' ' . $text . (($numberOfUnits > 1) ? 's' : '');
+            }
+        }
+    }
+
+    public static function mapArray($ar, $key="intId") {
+        $arNew=array();
+        foreach($ar as $value) {
+            $newKey=null;
+            if (is_object($value) && property_exists($value, $key))
+                $newKey=$value->$key;
+            if (is_array($value) && isset($value[$key]))
+                $newKey=$value[$key];
+            $arNew[$newKey]=$value;
+        }
+        return $arNew;
+
+    }
+
     public static function urlClean($str, $delimiter = '-') {
         $str = trim($str);
         setlocale(LC_ALL, 'en_US.UTF8');
