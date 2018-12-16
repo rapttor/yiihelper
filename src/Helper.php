@@ -1,12 +1,14 @@
-<?php namespace RapTToR;
-
+<?php // ﷽‎
+namespace RapTToR;
 /**
  * @author rapttor
+ *
+require __DIR__ . '/protected/vendor/autoload.php';
  */
 
 \Yii::import('application.components.*');
 
-$HELPER = array();
+$RapTToR_HELPER = array();
 
 class Helper extends \Controller {
     public static function urlClean($str, $delimiter = '-') {
@@ -777,9 +779,9 @@ class Helper extends \Controller {
     }
 
     public static function debug($message, $type = "info", $value = null) {
-        global $HELPER;
+        global $RapTToR_HELPER;
         $debug = array("message" => $message, "type" => $type, "value" => $value);
-        $HELPER["debug"][] = $debug;
+        $RapTToR_HELPER["debug"][] = $debug;
         error_log(json_encode($debug));
     }
 }
