@@ -3,7 +3,7 @@ namespace RapTToR;
 /**
  * @author rapttor
  *
-require __DIR__ . '/protected/vendor/autoload.php';
+ * require __DIR__ . '/protected/vendor/autoload.php';
  */
 
 \Yii::import('application.components.*');
@@ -72,29 +72,27 @@ class Helper extends \Controller {
             'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
         );
 
-        $ext = strtolower(array_pop(explode('.',$filename)));
+        $ext = strtolower(array_pop(explode('.', $filename)));
         if (array_key_exists($ext, $mime_types)) {
             return $mime_types[$ext];
-        }
-        elseif (function_exists('finfo_open')) {
+        } elseif (function_exists('finfo_open')) {
             $finfo = finfo_open(FILEINFO_MIME);
             $mimetype = finfo_file($finfo, $filename);
             finfo_close($finfo);
             return $mimetype;
-        }
-        else {
+        } else {
             return 'application/octet-stream';
         }
     }
 
     public static function timePassed($time) {
-        if (is_null($time) || $time=="") return "";
-        if (is_string($time)) $time=strtotime($time);
+        if (is_null($time) || $time == "") return "";
+        if (is_string($time)) $time = strtotime($time);
         $time = time() - $time; // to get the time since that moment
-        $time = ($time<1)? 1 : $time;
+        $time = ($time < 1) ? 1 : $time;
         $intPlural = 0;
 
-        $tokens = array (
+        $tokens = array(
             31536000 => 'year',
             2592000 => 'month',
             604800 => 'week',
@@ -105,12 +103,12 @@ class Helper extends \Controller {
         );
 
         $arTimeUnits = array(
-            'year'=> ['år', 'år'],
-            'month'=> ['måmad', 'månader'],
+            'year' => ['år', 'år'],
+            'month' => ['måmad', 'månader'],
             'week' => ['vecka', 'veckor'],
-            'day'=> ['dag', 'dagar'],
+            'day' => ['dag', 'dagar'],
             'hour' => ['timma', 'timmar'],
-            'minute'=> ['minut', 'minuter'],
+            'minute' => ['minut', 'minuter'],
             'second' => ['sekund', 'sekunder']
         );
 
@@ -121,7 +119,7 @@ class Helper extends \Controller {
                 $numberOfUnits = floor($time / $unit);
 
                 if ($numberOfUnits > 1) {
-                    $intPlural=1;
+                    $intPlural = 1;
                 }
 
                 return $numberOfUnits . ' ' . $arTimeUnits[$text][$intPlural];
@@ -130,15 +128,15 @@ class Helper extends \Controller {
         }
     }
 
-    public static function mapArray($ar, $key="intId") {
-        $arNew=array();
-        foreach($ar as $value) {
-            $newKey=null;
+    public static function mapArray($ar, $key = "intId") {
+        $arNew = array();
+        foreach ($ar as $value) {
+            $newKey = null;
             if (is_object($value) && property_exists($value, $key))
-                $newKey=$value->$key;
+                $newKey = $value->$key;
             if (is_array($value) && isset($value[$key]))
-                $newKey=$value[$key];
-            $arNew[$newKey]=$value;
+                $newKey = $value[$key];
+            $arNew[$newKey] = $value;
         }
         return $arNew;
 
@@ -868,7 +866,10 @@ class Helper extends \Controller {
 
     }
 
-    public function btnAdd($type, $params) {
+    public function btnAdd($type, $params = array()) {
+        if (is_object($type))
+            $type = strtolower(get_class($type));
+
         $class = (isset($params["class"])) ? $params["class"] : "pull-right";
         $check = (isset($params["check"])) ? $params["check"] : true;
         $title = (isset($params["btnTitle"])) ? $params["btnTitle"] : 'Add ' . $type;
@@ -899,6 +900,9 @@ class Helper extends \Controller {
     }
 
     public function linkAdd($type, $params = array()) {
+        if (is_object($type))
+            $type = strtolower(get_class($type));
+
         $url = Yii::app()->createUrl($type . '/create', $params);
         return $url;
     }
