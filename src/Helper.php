@@ -128,7 +128,7 @@ class Helper extends \Controller {
         }
     }
 
-    public static function mapArray($ar, $key = "intId") {
+    public static function mapArray($ar, $key = "id") {
         $arNew = array();
         foreach ($ar as $value) {
             $newKey = null;
