@@ -1,15 +1,22 @@
 <?php // ﷽‎
 namespace RapTToR;
+
 /**
  * @author rapttor
  *
  * require __DIR__ . '/protected/vendor/autoload.php';
  */
 
+use PHPUnit\Runner\Exception;
+
 if (defined("Yii")) {
     \Yii::import('application.components.*');
-} else if (!class_exists("Controller")) {
-    class Controller {}
+} else {
+    try {
+        class Controller {
+        }
+    } catch (Exception $e) {
+    }
 }
 
 $RapTToR_HELPER = array();
