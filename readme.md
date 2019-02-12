@@ -20,3 +20,5 @@ Install
           "url": "https://github.com/rapttor/helper.git"
         }
       ]
+      
+ define class Controller() when not using Yii framework

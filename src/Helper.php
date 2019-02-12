@@ -5,20 +5,14 @@ namespace RapTToR;
  * @author rapttor
  *
  * require __DIR__ . '/protected/vendor/autoload.php';
+ * define class Controller() when not using Yii framework
  */
 
 use PHPUnit\Runner\Exception;
 
 if (defined("Yii")) {
     \Yii::import('application.components.*');
-} else {
-    try {
-        class Controller {
-        }
-    } catch (Exception $e) {
-    }
 }
-
 $RapTToR_HELPER = array();
 
 class Helper extends \Controller {
