@@ -921,4 +921,20 @@ class Helper extends \Controller {
         $RapTToR_HELPER["debug"][] = $debug;
         error_log(json_encode($debug));
     }
+
+    public static function render($strViewFile, $arVariables, $return = false) {
+        $strTemplate = $strViewFile . ".php";
+        if (file_exists($strTemplate)) {
+            extract($arVariables);
+            ob_start();
+            include $strTemplate;
+            $strResult = ob_get_clean();
+            if ($return) {
+                return $strResult;
+            } else {
+                echo $strResult;
+                return true;
+            }
+        } else return "Not found $strViewFile";
+    }
 }
