@@ -6,8 +6,11 @@ namespace RapTToR;
  * require __DIR__ . '/protected/vendor/autoload.php';
  */
 
-if (defined("Yii"))
+if (defined("Yii")) {
     \Yii::import('application.components.*');
+} else if (!class_exists("Controller")) {
+    class Controller {}
+}
 
 $RapTToR_HELPER = array();
 
