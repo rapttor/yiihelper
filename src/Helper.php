@@ -6,7 +6,8 @@ namespace RapTToR;
  * require __DIR__ . '/protected/vendor/autoload.php';
  */
 
-\Yii::import('application.components.*');
+if (defined("Yii"))
+    \Yii::import('application.components.*');
 
 $RapTToR_HELPER = array();
 
