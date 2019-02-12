@@ -8,8 +8,6 @@ namespace RapTToR;
  * define class Controller() when not using Yii framework
  */
 
-use PHPUnit\Runner\Exception;
-
 if (defined("Yii")) {
     \Yii::import('application.components.*');
 }
