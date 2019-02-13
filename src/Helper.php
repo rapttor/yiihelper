@@ -928,6 +928,7 @@ class Helper extends \Controller {
     public static function render($strViewFile, $arVariables, $return = false) {
         $strTemplate = $strViewFile . ".php";
         if (file_exists($strTemplate)) {
+            if (is_object($arVariables)) $arVariables = (array)$arVariables;
             extract($arVariables);
             ob_start();
             include $strTemplate;
