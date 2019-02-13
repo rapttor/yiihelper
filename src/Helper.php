@@ -339,6 +339,7 @@ class Helper extends \Controller {
     }
 
     public static function aVal($a, $k, $d = "") {
+        if (is_object($a)) $a=(array)$a;
         return (is_array($a) && isset($a[$k])) ? $a[$k] : $d;
 
     }
