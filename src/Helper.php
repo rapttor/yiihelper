@@ -932,20 +932,24 @@ class Helper extends \Controller {
         error_log(json_encode($debug));
     }
 
-    public static function render($strViewFile, $arVariables, $return = false) {
+    public static function render($strViewFile, $arVariables = [], $return = false, $sendthis = null)
+    {
         $strTemplate = $strViewFile . ".php";
+        $strResult = "";
         if (file_exists($strTemplate)) {
             if (is_object($arVariables)) $arVariables = (array)$arVariables;
+            if (!is_null($sendthis)) $arVariables["this"] = $sendthis;
             extract($arVariables);
-            ob_start();
-            include $strTemplate;
-            $strResult = ob_get_clean();
+            if ($return) ob_start();
+            include($strTemplate);
+            if ($return) $strResult = ob_get_clean();
             if ($return) {
                 return $strResult;
             } else {
                 echo $strResult;
                 return true;
             }
-        } else return "Not found $strViewFile";
+        } else return "Template not found $strViewFile";
     }
+
 }
