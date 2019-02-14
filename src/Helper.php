@@ -345,8 +345,11 @@ class Helper extends \Controller {
     }
 
     public static function aFind($a, $k, $v) {
-        if (is_array($a)) foreach ($a as $item)
-            if (isset($item[$k]) && $item[$k] == $v) return $item;
+        if (is_array($a)) foreach ($a as $item){
+            if (is_array($item) && isset($item[$k]) && $item[$k] == $v) return $item;
+            if (is_object($item)) foreach($item as $key=>$value)
+                if ($k==$key && $v==$value) return $item;
+        }
         return null;
     }
 
