@@ -339,9 +339,15 @@ class Helper extends \Controller {
     }
 
     public static function aVal($a, $k, $d = "") {
-        if (is_object($a)) $a=(array)$a;
+        if (is_object($a)) $a = (array)$a;
         return (is_array($a) && isset($a[$k])) ? $a[$k] : $d;
 
+    }
+
+    public static function aFind($a, $k, $v) {
+        if (is_array($a)) foreach ($a as $item)
+            if (isset($item[$k]) && $item[$k] == $v) return $item;
+        return null;
     }
 
     public static function back($title = "Back") {
