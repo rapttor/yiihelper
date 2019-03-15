@@ -468,7 +468,7 @@ class Helper extends \Controller {
             header('Expires: Mon, 1 Avg 1999 05:00:00 GMT');
         }
         header('Content-Type: application/json');
-        self::disableLogRoutes();
+        if (defined("YII_PATH")) self::disableLogRoutes();
         echo $json;
         if ($die) {
             if (defined("Yii")) \Yii::app()->end();
@@ -477,7 +477,7 @@ class Helper extends \Controller {
     }
 
     public static function disableLogRoutes() {
-        if (defined("Yii")) foreach (\Yii::app()->log->routes as $route) {
+        foreach (\Yii::app()->log->routes as $route) {
             if ($route instanceof CWebLogRoute) {
                 $route->enabled = false; // disable any weblogroutes
             }
