@@ -345,10 +345,10 @@ class Helper extends \Controller {
     }
 
     public static function aFind($a, $k, $v) {
-        if (is_array($a)) foreach ($a as $item){
+        if (is_array($a)) foreach ($a as $item) {
             if (is_array($item) && isset($item[$k]) && $item[$k] == $v) return $item;
-            if (is_object($item)) foreach($item as $key=>$value)
-                if ($k==$key && $v==$value) return $item;
+            if (is_object($item)) foreach ($item as $key => $value)
+                if ($k == $key && $v == $value) return $item;
         }
         return null;
     }
@@ -468,15 +468,19 @@ class Helper extends \Controller {
             header('Expires: Mon, 1 Avg 1999 05:00:00 GMT');
         }
         header('Content-Type: application/json');
+        self::disableLogRoutes();
         echo $json;
+        if ($die) {
+            if (defined("Yii")) \Yii::app()->end();
+            die;
+        }
+    }
+
+    public static function disableLogRoutes() {
         if (defined("Yii")) foreach (\Yii::app()->log->routes as $route) {
             if ($route instanceof CWebLogRoute) {
                 $route->enabled = false; // disable any weblogroutes
             }
-        }
-        if ($die) {
-            if (defined("Yii")) \Yii::app()->end();
-            die;
         }
     }
 
@@ -572,6 +576,13 @@ class Helper extends \Controller {
         }
     }
 
+    /**
+     * Sort array or arrays items on key
+     * @param $array
+     * @param $key
+     * @param bool $desc
+     * @return array
+     */
     public static function sortItems($array, $key, $desc = false) {
         $sorter = array();
         $ret = array();
@@ -589,9 +600,14 @@ class Helper extends \Controller {
         return $array;
     }
 
-    public static function str2arr($str) {
+    /**
+     * @param $str
+     * @param string $delimiter
+     * @return array
+     */
+    public static function str2arr($str, $delimiter = ',') {
         $arr = array();
-        if (is_string($str)) $arr = explode(',', $str);
+        if (is_string($str)) $arr = explode($delimiter, $str);
         foreach ($arr as $key => $value) $arr[$key] = trim($value);
         $arr = array_unique($arr);
         return $arr;
@@ -603,6 +619,12 @@ class Helper extends \Controller {
         die;
     }
 
+    /**
+     * Execute Yii1 SQL
+     * @param $sql
+     * @param string $action
+     * @return mixed
+     */
     public static function SQL($sql, $action = "all" /* row/all */) {
         switch (strtoupper($action)) {
             case "ALL":
@@ -791,7 +813,7 @@ class Helper extends \Controller {
     }
 
     /*
-    * migrations from code
+    * Yii1 run migrations from code
     */
     public static function runMigrationTool($action = "migrate", $param = "") {
         //$action = (isset($_GET["action"])) ? htmlspecialchars($_GET["action"], ENT_QUOTES) : "migrate";
@@ -823,6 +845,12 @@ class Helper extends \Controller {
         //$this->render('index');
     }
 
+    /**
+     * Yii1 ActiveRecord DbSchema
+     * @param $tableName
+     * @param $tableField
+     * @return bool
+     */
     public function fieldExists($tableName, $tableField) {
         $table = \Yii::app()->db->schema->getTable($tableName);
         return (isset($table->columns[$tableField]));
@@ -935,8 +963,14 @@ class Helper extends \Controller {
         error_log(json_encode($debug));
     }
 
-    public static function render($strViewFile, $arVariables = [], $return = false, $sendthis = null)
-    {
+    /**
+     * @param $strViewFile
+     * @param array $arVariables
+     * @param bool $return false
+     * @param null $sendthis null - pass $this inside object methods, accessible in template
+     * @return bool|string
+     */
+    public static function template($strViewFile, $arVariables = [], $return = false, $sendthis = null) {
         $strTemplate = $strViewFile . ".php";
         $strResult = "";
         if (file_exists($strTemplate)) {
@@ -953,6 +987,20 @@ class Helper extends \Controller {
                 return true;
             }
         } else return "Template not found $strViewFile";
+    }
+
+    /**
+     * @param $filehandle = fopen("{$filename}", "r")
+     * @param $callback function($data);
+     * @param int $rows 1000
+     * @param string $delimiter ,
+     * @param bool $close true
+     */
+    public function processLargeCSV($filehandle, $callback, $rows = 1000, $delimiter = ",", $close = true) {
+        while (($data = fgetcsv($filehandle, $rows, $delimiter)) !== FALSE) {
+            call_user_func($callback, $data);
+        }
+        if ($close) fclose($filehandle);
     }
 
 }
