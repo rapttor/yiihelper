@@ -461,8 +461,12 @@ class Helper extends \Controller {
         return $error;
     }
 
-    public static function send($data, $cache = false, $die = true) {
-        $json = (!self::is_json($data)) ? json_encode($data) : $data;
+    public static function send($data, $cache = false, $die = true, $convert=true) {
+        if ($convert) {
+            if (is_array($data))
+                $data=json_encode($data);
+            $json = (!self::is_json($data)) ? json_encode($data) : $data;
+        }
         if (!$cache) {
             header('Cache-Control: no-cache, must-revalidate');
             header('Expires: Mon, 1 Avg 1999 05:00:00 GMT');
