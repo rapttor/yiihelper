@@ -106,13 +106,13 @@ class Helper extends \Controller {
         );
 
         $arTimeUnits = array(
-            'year' => ['år', 'år'],
-            'month' => ['måmad', 'månader'],
-            'week' => ['vecka', 'veckor'],
-            'day' => ['dag', 'dagar'],
-            'hour' => ['timma', 'timmar'],
-            'minute' => ['minut', 'minuter'],
-            'second' => ['sekund', 'sekunder']
+            'year' => ['year', 'years'],
+            'month' => ['month', 'months'],
+            'week' => ['week', 'weeks'],
+            'day' => ['day', 'days'],
+            'hour' => ['hour', 'hours'],
+            'minute' => ['minute', 'minutes'],
+            'second' => ['second', 'seconds']
         );
 
         foreach ($tokens as $unit => $text) {
@@ -461,10 +461,10 @@ class Helper extends \Controller {
         return $error;
     }
 
-    public static function send($data, $cache = false, $die = true, $convert=true) {
+    public static function send($data, $cache = false, $die = true, $convert = true) {
         if ($convert) {
             if (is_array($data))
-                $data=json_encode($data);
+                $data = json_encode($data);
             $json = (!self::is_json($data)) ? json_encode($data) : $data;
         }
         if (!$cache) {
