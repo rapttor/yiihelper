@@ -289,7 +289,7 @@ class Helper extends \Controller {
     public static function migrate($def, $db) {
         foreach ($def as $n => $t) {
             $n = trim($n);
-            if (!isset($t["fields"]) && !isset($t["index"]))
+            if (!isset($t["fields"]) && !isset($t["index"]) && !isset($t["values"]))
                 $t["fields"] = $t; // set up fields from whole array
             if (isset($t["fields"]))
                 @$db->createTable(trim($n), $t["fields"]); // creating a table
