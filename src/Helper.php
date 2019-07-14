@@ -291,7 +291,8 @@ class Helper extends \Controller {
             $n = trim($n);
             if (!isset($t["fields"]) && !isset($t["index"]))
                 $t["fields"] = $t; // set up fields from whole array
-            @$db->createTable(trim($n), $t["fields"]); // creating a table
+            if (isset($t["fields"]))
+                @$db->createTable(trim($n), $t["fields"]); // creating a table
             if (isset($t["index"])) foreach ($t["index"] as $u => $f)
                 if (!is_null($f)) foreach ($f as $field)
                     @$db->createIndex(trim($n) . $field, trim($n), $field, $u); // create indexe's
