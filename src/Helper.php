@@ -339,9 +339,9 @@ class Helper extends \Controller {
         return $result;
     }
 
-    public static function aVal($a, $k, $d = "", $addIfExists=null) {
+    public static function aVal($a, $k, $d = "") {
         if (is_object($a)) $a = (array)$a;
-        return (is_array($a) && isset($a[$k])) ? $a[$k].$addIfExists : $d;
+        return (is_array($a) && isset($a[$k])) ? $a[$k] : $d;
 
     }
 
