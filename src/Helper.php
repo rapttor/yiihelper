@@ -321,6 +321,15 @@ class Helper extends \Controller {
         }
     }
 
+    /** Yii helper migrate */
+    public static function migrateDrop($def, $db) {
+        $done = true;
+        foreach ($def as $n => $t) {
+            if (!$db->dropTable($n)) $done = false;
+        }
+        return $done;
+    }
+
     public static function IconMenu($menu) {
         $result = "";
         foreach ($menu as $m) $result .= self::Icon($m);
