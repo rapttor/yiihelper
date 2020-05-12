@@ -475,7 +475,7 @@ class Helper extends \Controller {
         if ($convert) {
             if (is_array($data))
                 $data = json_encode($data);
-            $json = (!self::is_json($data)) ? json_encode($data) : $data;
+            $json = (!self::is_json($data)) ? json_encode($data, JSON_PRETTY_PRINT) : $data;
         }
         if (!$cache) {
             header('Cache-Control: no-cache, must-revalidate');
