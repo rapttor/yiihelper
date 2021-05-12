@@ -11,6 +11,10 @@ Features
 Install
 -------
 
+    composer require rapttor/helper
+
+or
+
       "require": {
         "rapttor/helper": "dev-master"
       },

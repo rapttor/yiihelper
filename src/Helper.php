@@ -7,7 +7,6 @@ namespace RapTToR;
  * require __DIR__ . '/protected/vendor/autoload.php';
  * define class Controller() when not using Yii framework
  */
-
 if (defined("Yii")) {
     \Yii::import('application.components.*');
 }
