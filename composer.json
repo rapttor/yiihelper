@@ -1,7 +1,10 @@
 {
-  "name": "rapttor/helper",
-  "description": "General helper class",
-  "keywords": ["php", "helper"],
+  "name": "rapttor/yiihelper",
+  "description": "General Yii1.x helper class",
+  "keywords": [
+    "php",
+    "helper"
+  ],
   "homepage": "http://www.rapttor.com/",
   "type": "library",
   "license": "Apache-2.0",
@@ -16,7 +19,7 @@
   "support": {
     "issues": "https://github.com/rapttor/helper/issues?state=open",
     "wiki": "https://github.com/rapttor/helper/wiki",
-    "source": "https://github.com/rapttor/helper.git"
+    "source": "https://github.com/rapttor/yiihelper.git"
   },
   "repositories": [
     {
@@ -25,13 +28,13 @@
         "name": "RapTToR/Helper",
         "version": "dev-master",
         "source": {
-          "url": "https://github.com/rapttor/helper.git",
+          "url": "https://github.com/rapttor/yiihelper.git",
           "type": "git",
           "reference": "master"
         },
         "autoload": {
-          "psr-0" : {
-            "RapTToR\\Helper" : "src"
+          "psr-0": {
+            "RapTToR\\Helper": "src"
           }
         }
       }
@@ -41,8 +44,8 @@
     "php": ">=4.5.0"
   },
   "autoload": {
-    "classmap" : [
-      "src/Helper.php"
+    "classmap": [
+      "src/YiiHelper.php"
     ]
   }
 }

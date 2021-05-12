@@ -12,155 +12,18 @@ if (defined("Yii")) {
 }
 $RapTToR_HELPER = array();
 
-class Helper extends \Controller {
+class YiiHelper extends \RapTToR\Helper
+{
 
-    public static function mime_content_type($filename) {
-
-        $mime_types = array(
-
-            'txt' => 'text/plain',
-            'htm' => 'text/html',
-            'html' => 'text/html',
-            'php' => 'text/html',
-            'css' => 'text/css',
-            'js' => 'application/javascript',
-            'json' => 'application/json',
-            'xml' => 'application/xml',
-            'swf' => 'application/x-shockwave-flash',
-            'flv' => 'video/x-flv',
-
-            // images
-            'png' => 'image/png',
-            'jpe' => 'image/jpeg',
-            'jpeg' => 'image/jpeg',
-            'jpg' => 'image/jpeg',
-            'gif' => 'image/gif',
-            'bmp' => 'image/bmp',
-            'ico' => 'image/vnd.microsoft.icon',
-            'tiff' => 'image/tiff',
-            'tif' => 'image/tiff',
-            'svg' => 'image/svg+xml',
-            'svgz' => 'image/svg+xml',
-
-            // archives
-            'zip' => 'application/zip',
-            'rar' => 'application/x-rar-compressed',
-            'exe' => 'application/x-msdownload',
-            'msi' => 'application/x-msdownload',
-            'cab' => 'application/vnd.ms-cab-compressed',
-
-            // audio/video
-            'mp3' => 'audio/mpeg',
-            'qt' => 'video/quicktime',
-            'mov' => 'video/quicktime',
-
-            // adobe
-            'pdf' => 'application/pdf',
-            'psd' => 'image/vnd.adobe.photoshop',
-            'ai' => 'application/postscript',
-            'eps' => 'application/postscript',
-            'ps' => 'application/postscript',
-
-            // ms office
-            'doc' => 'application/msword',
-            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'rtf' => 'application/rtf',
-            'xls' => 'application/vnd.ms-excel',
-            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'ppt' => 'application/vnd.ms-powerpoint',
-
-            // open office
-            'odt' => 'application/vnd.oasis.opendocument.text',
-            'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
-        );
-
-        $ext = strtolower(array_pop(explode('.', $filename)));
-        if (array_key_exists($ext, $mime_types)) {
-            return $mime_types[$ext];
-        } elseif (function_exists('finfo_open')) {
-            $finfo = finfo_open(FILEINFO_MIME);
-            $mimetype = finfo_file($finfo, $filename);
-            finfo_close($finfo);
-            return $mimetype;
-        } else {
-            return 'application/octet-stream';
-        }
-    }
-
-    public static function timePassed($time) {
-        if (is_null($time) || $time == "") return "";
-        if (is_string($time)) $time = strtotime($time);
-        $time = time() - $time; // to get the time since that moment
-        $time = ($time < 1) ? 1 : $time;
-        $intPlural = 0;
-
-        $tokens = array(
-            31536000 => 'year',
-            2592000 => 'month',
-            604800 => 'week',
-            86400 => 'day',
-            3600 => 'hour',
-            60 => 'minute',
-            1 => 'second'
-        );
-
-        $arTimeUnits = array(
-            'year' => ['year', 'years'],
-            'month' => ['month', 'months'],
-            'week' => ['week', 'weeks'],
-            'day' => ['day', 'days'],
-            'hour' => ['hour', 'hours'],
-            'minute' => ['minute', 'minutes'],
-            'second' => ['second', 'seconds']
-        );
-
-        foreach ($tokens as $unit => $text) {
-            if ($time < $unit) {
-                continue;
-            } else {
-                $numberOfUnits = floor($time / $unit);
-
-                if ($numberOfUnits > 1) {
-                    $intPlural = 1;
-                }
-
-                return $numberOfUnits . ' ' . $arTimeUnits[$text][$intPlural];
-                // return $numberOfUnits . ' ' . $text . (($numberOfUnits > 1) ? 's' : '');
-            }
-        }
-    }
-
-    public static function mapArray($ar, $key = "id") {
-        $arNew = array();
-        foreach ($ar as $value) {
-            $newKey = null;
-            if (is_object($value) && property_exists($value, $key))
-                $newKey = $value->$key;
-            if (is_array($value) && isset($value[$key]))
-                $newKey = $value[$key];
-            $arNew[$newKey] = $value;
-        }
-        return $arNew;
-
-    }
-
-    public static function urlClean($str, $delimiter = '-') {
-        $str = trim($str);
-        setlocale(LC_ALL, 'en_US.UTF8');
-        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
-        $clean = preg_replace("/[^a-zA-Z0-9|+ -]/", '', $clean);
-        $clean = strtolower(trim($clean, '-'));
-        $clean = preg_replace("/[|+ -]+/", $delimiter, $clean);
-        return $clean;
-    }
-
-    public static function header($title, $icon = null) {
+    public static function header($title, $icon = null)
+    {
         if (defined("Yii")) $title = \Yii::t("main", $title);
         return '<h1 class="pull-right"><i class="icons icon-' . $icon . ' pull-right"></i>
             ' . $title . ' &nbsp;</h1>';
     }
 
-    public static function checkEmail($mail, $disposable = null) {
+    public static function checkEmail($mail, $disposable = null)
+    {
         $disposable_mail = array();
         if (is_null($disposable)) {
             $base = "";
@@ -177,17 +40,20 @@ class Helper extends \Controller {
         return false;
     }
 
-    public static function imgurl($cat = null, $id = null) {
+    public static function imgurl($cat = null, $id = null)
+    {
         $base = "";
         if (defined("Yii")) $base = \Yii::app()->baseUrl;
         return $base . "/uploads/" . $cat . "/" . $id . ".jpg";
     }
 
-    public static function img($cat = null, $id = null, $class = "img-responsive") {
+    public static function img($cat = null, $id = null, $class = "img-responsive")
+    {
         return "<img src='" . self::imgurl($cat, $id) . "'  class='$class'>";
     }
 
-    public static function uploadDir($cat = null) {
+    public static function uploadDir($cat = null)
+    {
         $base = "";
         if (isset($_SERVER["HTTP_HOST"])) {
             $base = $_SERVER['DOCUMENT_ROOT'] . "/" . (defined("Yii") ? \Yii::app()->baseUrl : "");
@@ -197,12 +63,10 @@ class Helper extends \Controller {
         return $base . "/uploads/" . (is_null($cat) ? "" : $cat . '/');
     }
 
-    public static function arrayValue($a, $i, $default = null) {
-        return (is_array($a) && isset($a[$i])) ? $a[$i] : $default;
-    }
 
 
-    public static function rand_date($min_date = "01-01-2016", $max_date = "31-12-2016") {
+    public static function rand_date($min_date = "01-01-2016", $max_date = "31-12-2016")
+    {
         /* Gets 2 dates as string, earlier and later date.
            Returns date in between them.
         */
@@ -215,17 +79,20 @@ class Helper extends \Controller {
         return date('Y-m-d H:i:s', $rand_epoch);
     }
 
-    public static function domain($str, $dom = "") {
+    public static function domain($str, $dom = "")
+    {
         return (strpos($str, "http") === false) ? "http://" . $str : $str;
     }
 
-    public static function link($url, $text = null, $options = 'target="_blank"') {
+    public static function link($url, $text = null, $options = 'target="_blank"')
+    {
         if (is_null($text)) $text = $url;
         $link = self::domain($url);
         return "<a href='$link' $options>$text</a>";
     }
 
-    public static function time_elapsed_string($datetime, $full = false) {
+    public static function time_elapsed_string($datetime, $full = false)
+    {
         $now = new DateTime;
         $ago = new DateTime($datetime, new DateTimeZone(date_default_timezone_get()));
         $diff = $now->diff($ago);
@@ -254,14 +121,15 @@ class Helper extends \Controller {
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
 
-    public static function ago($tm, $rcs = 0) {
+    public static function ago($tm, $rcs = 0)
+    {
         if (is_string($tm)) $tm = strtotime($tm);
         $cur_tm = time();
         $dif = $cur_tm - $tm;
         $pds = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
         $lngh = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
 
-        for ($v = sizeof($lngh) - 1; ($v >= 0) && (($no = $dif / $lngh[$v]) <= 1); $v--) ;
+        for ($v = sizeof($lngh) - 1; ($v >= 0) && (($no = $dif / $lngh[$v]) <= 1); $v--);
         if ($v < 0) $v = 0;
         $_tm = $cur_tm - ($dif % $lngh[$v]);
         $no = floor($no);
@@ -273,7 +141,8 @@ class Helper extends \Controller {
         return $x;
     }
 
-    public static function more($str, $length = 200, $more = "<!-- more -->") {
+    public static function more($str, $length = 200, $more = "<!-- more -->")
+    {
         if (strlen($str) < $length)
             return $str;
 
@@ -285,7 +154,8 @@ class Helper extends \Controller {
     }
 
     /** Yii helper migrate */
-    public static function migrate($def, $db) {
+    public static function migrate($def, $db)
+    {
         foreach ($def as $n => $t) {
             $n = trim($n);
             if (!isset($t["fields"]) && !isset($t["index"]) && !isset($t["values"]))
@@ -308,7 +178,6 @@ class Helper extends \Controller {
                     $tv = array("parent_id" => $pid, "title" => trim($i));
                     @$db->insert($n, $tv);
                 }
-
             }
             if (isset($t["singlefield"])) foreach ($t["singlefield"] as $u => $f) {
                 if (is_numeric($u)) $u = "title";
@@ -321,7 +190,8 @@ class Helper extends \Controller {
     }
 
     /** Yii helper migrate */
-    public static function migrateDrop($def, $db) {
+    public static function migrateDrop($def, $db)
+    {
         $done = true;
         foreach ($def as $n => $t) {
             if (!$db->dropTable($n)) $done = false;
@@ -329,13 +199,15 @@ class Helper extends \Controller {
         return $done;
     }
 
-    public static function IconMenu($menu) {
+    public static function IconMenu($menu)
+    {
         $result = "";
         foreach ($menu as $m) $result .= self::Icon($m);
         return $result;
     }
 
-    public static function Icon($i) {
+    public static function Icon($i)
+    {
         $result = "";
         if (!isset($i["value"]) && isset($i["url"])) $i["value"] = $i["url"];
         if (isset($i["value"]) && isset($i["ion"]) && isset($i["title"])) $result = "<div class='icontext' onclick='window.location.href=\"" .
@@ -347,13 +219,14 @@ class Helper extends \Controller {
         return $result;
     }
 
-    public static function aVal($a, $k, $d = "") {
+    public static function aVal($a, $k, $d = "")
+    {
         if (is_object($a)) $a = (array)$a;
         return (is_array($a) && isset($a[$k])) ? $a[$k] : $d;
-
     }
 
-    public static function aFind($a, $k, $v) {
+    public static function aFind($a, $k, $v)
+    {
         if (is_array($a)) foreach ($a as $item) {
             if (is_array($item) && isset($item[$k]) && $item[$k] == $v) return $item;
             if (is_object($item)) foreach ($item as $key => $value)
@@ -362,19 +235,22 @@ class Helper extends \Controller {
         return null;
     }
 
-    public static function back($title = "Back") {
+    public static function back($title = "Back")
+    {
         if (defined("Yii")) $title = \Yii::t("main", $title);
         return "<div class='clearfix'></div><a style='clear:both;margin:10px 0;' class='btn btn-primary' onclick='history.go(-1);'><i class='fa fa-caret-left'></i> " .
             $title . "</a><div class='clearfix'></div>";
     }
 
-    public static function is_json($string) {
+    public static function is_json($string)
+    {
         return ((is_string($string) &&
             (is_object(json_decode($string)) ||
                 is_array(json_decode($string, true))))) ? true : false;
     }
 
-    public static function json_validate($string) {
+    public static function json_validate($string)
+    {
         // decode the JSON data
         $result = json_decode($string);
 
@@ -395,15 +271,15 @@ class Helper extends \Controller {
             case JSON_ERROR_SYNTAX:
                 $error = 'Syntax error, malformed JSON.';
                 break;
-            // PHP >= 5.3.3
+                // PHP >= 5.3.3
             case JSON_ERROR_UTF8:
                 $error = 'Malformed UTF-8 characters, possibly incorrectly encoded.';
                 break;
-            // PHP >= 5.5.0
+                // PHP >= 5.5.0
             case JSON_ERROR_RECURSION:
                 $error = 'One or more recursive references in the value to be encoded.';
                 break;
-            // PHP >= 5.5.0
+                // PHP >= 5.5.0
             case JSON_ERROR_INF_OR_NAN:
                 $error = 'One or more NAN or INF values in the value to be encoded.';
                 break;
@@ -424,13 +300,15 @@ class Helper extends \Controller {
         return $result;
     }
 
-    public static function jsonValue($arr, $key, $def) {
+    public static function jsonValue($arr, $key, $def)
+    {
         $value = $def;
         if (isset($arr[$key]) && strlen(trim(strip_tags($arr[$key]))) > 2) $value = json_decode($arr[$key]);
         return $value;
     }
 
-    public static function jsonError() {
+    public static function jsonError()
+    {
         $error = null;
         switch (json_last_error()) {
             case JSON_ERROR_NONE:
@@ -448,15 +326,15 @@ class Helper extends \Controller {
             case JSON_ERROR_SYNTAX:
                 $error = 'Syntax error, malformed JSON.';
                 break;
-            // PHP >= 5.3.3
+                // PHP >= 5.3.3
             case JSON_ERROR_UTF8:
                 $error = 'Malformed UTF-8 characters, possibly incorrectly encoded.';
                 break;
-            // PHP >= 5.5.0
+                // PHP >= 5.5.0
             case JSON_ERROR_RECURSION:
                 $error = 'One or more recursive references in the value to be encoded.';
                 break;
-            // PHP >= 5.5.0
+                // PHP >= 5.5.0
             case JSON_ERROR_INF_OR_NAN:
                 $error = 'One or more NAN or INF values in the value to be encoded.';
                 break;
@@ -470,7 +348,8 @@ class Helper extends \Controller {
         return $error;
     }
 
-    public static function send($data, $cache = false, $die = true, $convert = true) {
+    public static function send($data, $cache = false, $die = true, $convert = true)
+    {
         if ($convert) {
             if (is_array($data))
                 $data = json_encode($data);
@@ -489,7 +368,8 @@ class Helper extends \Controller {
         }
     }
 
-    public static function disableLogRoutes() {
+    public static function disableLogRoutes()
+    {
         foreach (\Yii::app()->log->routes as $route) {
             if ($route instanceof CWebLogRoute) {
                 $route->enabled = false; // disable any weblogroutes
@@ -497,13 +377,15 @@ class Helper extends \Controller {
         }
     }
 
-    public static function map($str, $params) {
+    public static function map($str, $params)
+    {
         foreach ($params as $key => $value)
             $str = str_replace($key, $value, $str);
         return $str;
     }
 
-    public static function receive($url, $params = null, $cache = true) { // receive json
+    public static function receive($url, $params = null, $cache = true)
+    { // receive json
         if (!is_null($params)) $url = self::map($url, $params);
         $data = false;
         if (defined("Yii") && $cache) {
@@ -522,9 +404,10 @@ class Helper extends \Controller {
         return $data;
     }
 
-    public static function curl($url) {
+    public static function curl($url)
+    {
         if (!function_exists('curl_version')) {
-            exit ("Enable cURL in PHP");
+            exit("Enable cURL in PHP");
         }
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -546,25 +429,29 @@ class Helper extends \Controller {
         }
     }
 
-    public static function exportModelAsJson($data) {
+    public static function exportModelAsJson($data)
+    {
         return $json = (!self::is_json($data)) ? json_encode($data) : $data;
     }
 
-    public static function ellipsis($text, $length) {
+    public static function ellipsis($text, $length)
+    {
         return (mb_strlen($text) > $length) ? mb_substr($text, 0, $length) . '... ' : $text;
     }
 
-    public static function replaceAll($what, $with, $str) {
+    public static function replaceAll($what, $with, $str)
+    {
         while (stripos($str, $what)) $str = str_ireplace($what, $with, $str);
         return $str;
     }
 
-    public static function urlText($str) {
+    public static function urlText($str)
+    {
         return self::replaceAll('__', '_', preg_replace('/[^\w]/', '_', $str));
-
     }
 
-    public static function cors() {
+    public static function cors()
+    {
 
         // Allow from any origin
         if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -596,7 +483,8 @@ class Helper extends \Controller {
      * @param bool $desc
      * @return array
      */
-    public static function sortItems($array, $key, $desc = false) {
+    public static function sortItems($array, $key, $desc = false)
+    {
         $sorter = array();
         $ret = array();
         reset($array);
@@ -618,7 +506,8 @@ class Helper extends \Controller {
      * @param string $delimiter
      * @return array
      */
-    public static function str2arr($str, $delimiter = ',') {
+    public static function str2arr($str, $delimiter = ',')
+    {
         $arr = array();
         if (is_string($str)) $arr = explode($delimiter, $str);
         foreach ($arr as $key => $value) $arr[$key] = trim($value);
@@ -626,7 +515,8 @@ class Helper extends \Controller {
         return $arr;
     }
 
-    public static function vardumper($object) {
+    public static function vardumper($object)
+    {
         echo "<pre>";
         var_dump($object);
         die;
@@ -638,7 +528,8 @@ class Helper extends \Controller {
      * @param string $action
      * @return mixed
      */
-    public static function SQL($sql, $action = "all" /* row/all */) {
+    public static function SQL($sql, $action = "all" /* row/all */)
+    {
         switch (strtoupper($action)) {
             case "ALL":
                 return \Yii::app()->db->createCommand($sql)->queryAll();
@@ -659,7 +550,8 @@ class Helper extends \Controller {
      *
      * @return mixed
      */
-    public static function DBExport($withData = true, $dropTable = false, $saveName = null, $savePath = false) {
+    public static function DBExport($withData = true, $dropTable = false, $saveName = null, $savePath = false)
+    {
         $pdo = \Yii::app()->db->pdoInstance;
         $mysql = '';
         $tables = $pdo->query("show tables");
@@ -690,7 +582,6 @@ class Helper extends \Controller {
                     $mysql .= $insertSql;
                 }
             }
-
         }
 
         ob_start();
@@ -710,7 +601,6 @@ class Helper extends \Controller {
             header("Content-Description: Download SQL Export");
             header('Content-Disposition: attachment; filename=' . $saveName);
             echo $content;
-
         } else {
             $filePath = $savePath ? $savePath . '/' . $saveName : $saveName;
             file_put_contents($filePath, $content);
@@ -722,7 +612,8 @@ class Helper extends \Controller {
      * @param string $file : with the path and the file name
      * @return mixed
      */
-    public static function DBimport($file = '') {
+    public static function DBimport($file = '')
+    {
         $pdo = \Yii::app()->db->pdoInstance;
         try {
             if (file_exists($file)) {
@@ -748,7 +639,8 @@ class Helper extends \Controller {
      * @param $app
      * @param string $tables
      */
-    public static function BackupTables($tables = '*') {
+    public static function BackupTables($tables = '*')
+    {
         //get all of the tables
         if ($tables == '*') {
             //$tables = \Yii::app()->db->createCommand('SHOW TABLES')->queryColumn();
@@ -800,7 +692,8 @@ class Helper extends \Controller {
      * @param array $crons
      * @return array - with same keys as $cron =false/no error exception/error
      */
-    public static function CronJobs($crons = array()) {
+    public static function CronJobs($crons = array())
+    {
         /*
             $cron=array(
                 every   :   (mins),
@@ -828,7 +721,8 @@ class Helper extends \Controller {
     /*
     * Yii1 run migrations from code
     */
-    public static function runMigrationTool($action = "migrate", $param = "") {
+    public static function runMigrationTool($action = "migrate", $param = "")
+    {
         //$action = (isset($_GET["action"])) ? htmlspecialchars($_GET["action"], ENT_QUOTES) : "migrate";
         // $param = (isset($_GET["param"])) ? htmlspecialchars($_GET["param"], ENT_QUOTES) : "--interactive=0";
 
@@ -844,7 +738,8 @@ class Helper extends \Controller {
         echo htmlentities(ob_get_clean(), null, \Yii::app()->charset);
     }
 
-    public function actionYiic() {
+    public function actionYiic()
+    {
         ini_set('memory_limit', '-1');
         set_time_limit(1500);
         $action = (isset($_GET["action"])) ? htmlspecialchars($_GET["action"], ENT_QUOTES) : "migrate";
@@ -864,28 +759,33 @@ class Helper extends \Controller {
      * @param $tableField
      * @return bool
      */
-    public function fieldExists($tableName, $tableField) {
+    public function fieldExists($tableName, $tableField)
+    {
         $table = \Yii::app()->db->schema->getTable($tableName);
         return (isset($table->columns[$tableField]));
     }
 
-    public static function validateDate($date, $format = 'Y-m-d') {
+    public static function validateDate($date, $format = 'Y-m-d')
+    {
         $d = DateTime::createFromFormat($format, $date);
         // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
         return $d && $d->format($format) === $date;
     }
 
-    public static function validateTime($date, $format = 'Y-m-d H:i:s') {
+    public static function validateTime($date, $format = 'Y-m-d H:i:s')
+    {
         $d = DateTime::createFromFormat($format, $date);
         // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
         return $d && $d->format($format) === $date;
     }
 
-    public function canEdit($status = 20) {
+    public function canEdit($status = 20)
+    {
         return (!(Yii::app()->user->isGuest) && Yii::app()->user->status >= $status);
     }
 
-    public function btnEdit($obj, $params = array()) {
+    public function btnEdit($obj, $params = array())
+    {
         $objClass = get_class($obj);
         $class = (isset($params["class"])) ? $params["class"] : "pull-right";
         $check = (isset($params["check"])) ? $params["check"] : true;
@@ -910,17 +810,18 @@ class Helper extends \Controller {
         return "";
     }
 
-    public function btnView($obj, $class = "pull-right", $check = true) {
+    public function btnView($obj, $class = "pull-right", $check = true)
+    {
         $url = $this->linkView($obj);
         $title = (property_exists($obj, "title")) ? $obj->title : get_class($obj);
         return '<a class="btn btn-edit btn-link ' . $class . '" href="' . $url . '">
                     <i class="la la-pencil"></i> 
                     <span class="title">' . $title . '</span>
                 </a>';
-
     }
 
-    public function btnAdd($type, $params = array()) {
+    public function btnAdd($type, $params = array())
+    {
         if (is_object($type))
             $type = strtolower(get_class($type));
 
@@ -939,7 +840,8 @@ class Helper extends \Controller {
         return "";
     }
 
-    public function linkEdit($obj) {
+    public function linkEdit($obj)
+    {
         if (is_array($obj) && isset($obj["class"]) && isset($obj["id"])) {
             $section = $obj["class"];
             $id = $obj["id"];
@@ -953,7 +855,8 @@ class Helper extends \Controller {
         return $url;
     }
 
-    public function linkAdd($type, $params = array()) {
+    public function linkAdd($type, $params = array())
+    {
         if (is_object($type))
             $type = strtolower(get_class($type));
 
@@ -961,7 +864,8 @@ class Helper extends \Controller {
         return $url;
     }
 
-    public function linkView($obj) {
+    public function linkView($obj)
+    {
         $section = strtolower(get_class($obj));
         if (substr($section, strlen($section) - 1, 1) == "2")
             $section = substr($section, 0, strlen($section) - 1);
@@ -969,7 +873,8 @@ class Helper extends \Controller {
         return $url;
     }
 
-    public static function debug($message, $type = "info", $value = null) {
+    public static function debug($message, $type = "info", $value = null)
+    {
         global $RapTToR_HELPER;
         $debug = array("message" => $message, "type" => $type, "value" => $value);
         $RapTToR_HELPER["debug"][] = $debug;
@@ -983,7 +888,8 @@ class Helper extends \Controller {
      * @param null $sendthis null - pass $this inside object methods, accessible in template
      * @return bool|string
      */
-    public static function template($strViewFile, $arVariables = [], $return = false, $sendthis = null) {
+    public static function template($strViewFile, $arVariables = [], $return = false, $sendthis = null)
+    {
         $strTemplate = $strViewFile . ".php";
         $strResult = "";
         if (file_exists($strTemplate)) {
@@ -1009,11 +915,11 @@ class Helper extends \Controller {
      * @param string $delimiter ,
      * @param bool $close true
      */
-    public function processLargeCSV($filehandle, $callback, $rows = 1000, $delimiter = ",", $close = true) {
+    public function processLargeCSV($filehandle, $callback, $rows = 1000, $delimiter = ",", $close = true)
+    {
         while (($data = fgetcsv($filehandle, $rows, $delimiter)) !== FALSE) {
             call_user_func($callback, $data);
         }
         if ($close) fclose($filehandle);
     }
-
 }

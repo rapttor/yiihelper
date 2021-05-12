@@ -25,4 +25,4 @@ or
         }
       ]
       
- define class Controller() when not using Yii framework
+ 
