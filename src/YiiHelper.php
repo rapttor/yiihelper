@@ -922,4 +922,101 @@ class YiiHelper extends \RapTToR\Helper
         }
         if ($close) fclose($filehandle);
     }
+
+
+    /**
+     * Get data from table by kv array criteria and set new one with kv+attributes if not exists;
+     * @param $table
+     * @param $kv
+     * @param null $attributes
+     * @return array|CActiveRecord|mixed|null
+     */
+    public static function getset($table, $kv, $attributes = null)
+    {
+        /** @var CActiveRecord $class */
+        $class = ucfirst($table);
+        $d = $class::model()->findByAttributes($kv);
+        if (!$d && !is_null($attributes)) {
+            $d = new $class();
+
+            foreach ($kv as $k => $v)
+                $d->$k = $v;
+            foreach ($attributes as $k => $v)
+                $d->$k = $v;
+            try {
+                $d->save();
+            } catch (Exception $e) {
+                echo 'Caught exception: ', $e->getMessage(), "\n";
+            }
+        }
+        return $d;
+    }
+
+    public static function setLanguage($language)
+    {
+        $userdata = Yii::app()->user->getState("userdata");
+        $userdata["language"] = $language;
+        Yii::app()->user->setState("userdata", $userdata);
+
+        Yii::app()->language = $language;
+    }
+
+
+
+    /**
+     * Creates and executes an INSERT SQL statement for several rows.
+     *
+     * Usage:
+     * $rows = array(
+     *      array('id' => 1, 'name' => 'John'),
+     *      array('id' => 2, 'name' => 'Mark')
+     * );
+     * GeneralRepository::insertSeveral(User::model()->tableName(), $rows);
+     *
+     * @param string $table the table that new rows will be inserted into.
+     * @param array $array_columns the array of column datas array(array(name=>value,...),...) to be inserted into the table.
+     * @return integer number of rows affected by the execution.
+     */
+    public static function insertSeveral($table, $array_columns, $uniquekey = null)
+    {
+        $connection = Yii::app()->db;
+        $sql = '';
+        $params = array();
+        $i = 0;
+        foreach ($array_columns as $columns) {
+            $names = array();
+            $placeholders = array();
+            foreach ($columns as $name => $value) {
+                if (!$i) {
+                    $names[] = $connection->quoteColumnName($name);
+                }
+                if ($value instanceof CDbExpression) {
+                    $placeholders[] = $value->expression;
+                    foreach ($value->params as $n => $v)
+                        $params[$n] = $v;
+                } else {
+                    $placeholders[] = ':' . $name . $i;
+                    $params[':' . $name . $i] = $value;
+                }
+            }
+            $tablename = $connection->quoteTableName($table);
+            if (!$i) {
+                $sql = '';
+                if (!is_null($uniquekey) && isset($array_columns[$uniquekey])) {
+                    $uniquevalue = $array_columns[$uniquekey];
+                    $uniquevalue = $connection->quoteColumnName($uniquevalue);
+                    $sql .= 'if (EXISTS(select * from ' . $tablename . ' where ' . $uniquekey . '="' . $uniquevalue . '")) ';
+                }
+                $sql .= 'INSERT IGNORE INTO ' . $tablename
+                    . ' (' . implode(', ', $names) . ') VALUES ('
+                    . implode(', ', $placeholders) . ')';
+            } else {
+                $sql .= ',(' . implode(', ', $placeholders) . ')';
+            }
+            $i++;
+        }
+        $command = Yii::app()->db->createCommand($sql);
+        return $command->execute($params);
+        //return $connection->affected_rows();
+    }
 }
