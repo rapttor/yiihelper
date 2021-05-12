@@ -25,7 +25,7 @@
     {
       "type": "package",
       "package": {
-        "name": "RapTToR/Helper",
+        "name": "rapttor/yiihelper",
         "version": "dev-master",
         "source": {
           "url": "https://github.com/rapttor/yiihelper.git",
@@ -41,7 +41,8 @@
     }
   ],
   "require": {
-    "php": ">=4.5.0"
+    "php": ">=4.5.0",
+    "rapttor/helper": "dev-master"
   },
   "autoload": {
     "classmap": [

@@ -4,16 +4,72 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5648ce773351575545146921d1c42808",
-    "packages": [],
+    "content-hash": "473567861bfa4e505ab10a71ea646e42",
+    "packages": [
+        {
+            "name": "rapttor/helper",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rapttor/helper.git",
+                "reference": "2a643d017bb22d91a2adccb19691eb8a719675f8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rapttor/helper/zipball/2a643d017bb22d91a2adccb19691eb8a719675f8",
+                "reference": "2a643d017bb22d91a2adccb19691eb8a719675f8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=4.5.0"
+            },
+            "replace": {
+                "rapttor/helper": "self.version"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/Helper.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Emir Kurtovic",
+                    "email": "rapttor@gmail.com",
+                    "homepage": "http://www.rapttor.com/",
+                    "role": "Founder and project lead"
+                }
+            ],
+            "description": "General helper class",
+            "homepage": "http://www.rapttor.com/",
+            "keywords": [
+                "helper",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/rapttor/helper/issues?state=open",
+                "source": "https://github.com/rapttor/helper.git",
+                "wiki": "https://github.com/rapttor/helper/wiki"
+            },
+            "time": "2021-05-12T15:48:50+00:00"
+        }
+    ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "rapttor/helper": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=4.5.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }
