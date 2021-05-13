@@ -65,93 +65,6 @@ class YiiHelper extends \RapTToR\Helper
 
 
 
-    public static function rand_date($min_date = "01-01-2016", $max_date = "31-12-2016")
-    {
-        /* Gets 2 dates as string, earlier and later date.
-           Returns date in between them.
-        */
-
-        $min_epoch = strtotime($min_date);
-        $max_epoch = strtotime($max_date);
-
-        $rand_epoch = rand($min_epoch, $max_epoch);
-
-        return date('Y-m-d H:i:s', $rand_epoch);
-    }
-
-    public static function domain($str, $dom = "")
-    {
-        return (strpos($str, "http") === false) ? "http://" . $str : $str;
-    }
-
-    public static function link($url, $text = null, $options = 'target="_blank"')
-    {
-        if (is_null($text)) $text = $url;
-        $link = self::domain($url);
-        return "<a href='$link' $options>$text</a>";
-    }
-
-    public static function time_elapsed_string($datetime, $full = false)
-    {
-        $now = new DateTime;
-        $ago = new DateTime($datetime, new DateTimeZone(date_default_timezone_get()));
-        $diff = $now->diff($ago);
-
-        $diff->w = floor($diff->d / 7);
-        $diff->d -= $diff->w * 7;
-
-        $string = array(
-            'y' => 'year',
-            'm' => 'month',
-            'w' => 'week',
-            'd' => 'day',
-            'h' => 'hour',
-            'i' => 'minute',
-            's' => 'second',
-        );
-        foreach ($string as $k => &$v) {
-            if ($diff->$k) {
-                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
-            } else {
-                unset($string[$k]);
-            }
-        }
-
-        if (!$full) $string = array_slice($string, 0, 1);
-        return $string ? implode(', ', $string) . ' ago' : 'just now';
-    }
-
-    public static function ago($tm, $rcs = 0)
-    {
-        if (is_string($tm)) $tm = strtotime($tm);
-        $cur_tm = time();
-        $dif = $cur_tm - $tm;
-        $pds = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
-        $lngh = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
-
-        for ($v = sizeof($lngh) - 1; ($v >= 0) && (($no = $dif / $lngh[$v]) <= 1); $v--);
-        if ($v < 0) $v = 0;
-        $_tm = $cur_tm - ($dif % $lngh[$v]);
-        $no = floor($no);
-        if ($no <> 1)
-            $pds[$v] .= 's';
-        $x = sprintf("%d %s ", $no, $pds[$v]);
-        if (($rcs == 1) && ($v >= 1) && (($cur_tm - $_tm) > 0))
-            $x .= self::ago($_tm);
-        return $x;
-    }
-
-    public static function more($str, $length = 200, $more = "<!-- more -->")
-    {
-        if (strlen($str) < $length)
-            return $str;
-
-        $id = "SH" . sha1($str);
-        $length = (strpos($str, $more) !== false) ? strpos($str, $more) : $length;
-
-        return "<div id='$id'><div class='excerpt'>" . substr($str, 0, $length) . "</div><div style='display:none;' class='more'>" . substr($str, $length, strlen($str)) . "</div>
-        </div><a href='javascript:;' title='$length / " . strlen($str) . "' style='cursor:pointer;' onclick='$(\"#$id .more\").toggle();'>[...]</a>";
-    }
 
     /** Yii helper migrate */
     public static function migrate($def, $db)
@@ -219,22 +132,6 @@ class YiiHelper extends \RapTToR\Helper
         return $result;
     }
 
-    public static function aVal($a, $k, $d = "")
-    {
-        if (is_object($a)) $a = (array)$a;
-        return (is_array($a) && isset($a[$k])) ? $a[$k] : $d;
-    }
-
-    public static function aFind($a, $k, $v)
-    {
-        if (is_array($a)) foreach ($a as $item) {
-            if (is_array($item) && isset($item[$k]) && $item[$k] == $v) return $item;
-            if (is_object($item)) foreach ($item as $key => $value)
-                if ($k == $key && $v == $value) return $item;
-        }
-        return null;
-    }
-
     public static function back($title = "Back")
     {
         if (defined("Yii")) $title = \Yii::t("main", $title);
@@ -242,111 +139,6 @@ class YiiHelper extends \RapTToR\Helper
             $title . "</a><div class='clearfix'></div>";
     }
 
-    public static function is_json($string)
-    {
-        return ((is_string($string) &&
-            (is_object(json_decode($string)) ||
-                is_array(json_decode($string, true))))) ? true : false;
-    }
-
-    public static function json_validate($string)
-    {
-        // decode the JSON data
-        $result = json_decode($string);
-
-        // switch and check possible JSON errors
-        switch (json_last_error()) {
-            case JSON_ERROR_NONE:
-                $error = ''; // JSON is valid // No error has occurred
-                break;
-            case JSON_ERROR_DEPTH:
-                $error = 'The maximum stack depth has been exceeded.';
-                break;
-            case JSON_ERROR_STATE_MISMATCH:
-                $error = 'Invalid or malformed JSON.';
-                break;
-            case JSON_ERROR_CTRL_CHAR:
-                $error = 'Control character error, possibly incorrectly encoded.';
-                break;
-            case JSON_ERROR_SYNTAX:
-                $error = 'Syntax error, malformed JSON.';
-                break;
-                // PHP >= 5.3.3
-            case JSON_ERROR_UTF8:
-                $error = 'Malformed UTF-8 characters, possibly incorrectly encoded.';
-                break;
-                // PHP >= 5.5.0
-            case JSON_ERROR_RECURSION:
-                $error = 'One or more recursive references in the value to be encoded.';
-                break;
-                // PHP >= 5.5.0
-            case JSON_ERROR_INF_OR_NAN:
-                $error = 'One or more NAN or INF values in the value to be encoded.';
-                break;
-            case JSON_ERROR_UNSUPPORTED_TYPE:
-                $error = 'A value of a type that cannot be encoded was given.';
-                break;
-            default:
-                $error = 'Unknown JSON error occured.';
-                break;
-        }
-
-        if ($error !== '') {
-            // throw the Exception or exit // or whatever :)
-            exit($error);
-        }
-
-        // everything is OK
-        return $result;
-    }
-
-    public static function jsonValue($arr, $key, $def)
-    {
-        $value = $def;
-        if (isset($arr[$key]) && strlen(trim(strip_tags($arr[$key]))) > 2) $value = json_decode($arr[$key]);
-        return $value;
-    }
-
-    public static function jsonError()
-    {
-        $error = null;
-        switch (json_last_error()) {
-            case JSON_ERROR_NONE:
-                $error = ''; // JSON is valid // No error has occurred
-                break;
-            case JSON_ERROR_DEPTH:
-                $error = 'The maximum stack depth has been exceeded.';
-                break;
-            case JSON_ERROR_STATE_MISMATCH:
-                $error = 'Invalid or malformed JSON.';
-                break;
-            case JSON_ERROR_CTRL_CHAR:
-                $error = 'Control character error, possibly incorrectly encoded.';
-                break;
-            case JSON_ERROR_SYNTAX:
-                $error = 'Syntax error, malformed JSON.';
-                break;
-                // PHP >= 5.3.3
-            case JSON_ERROR_UTF8:
-                $error = 'Malformed UTF-8 characters, possibly incorrectly encoded.';
-                break;
-                // PHP >= 5.5.0
-            case JSON_ERROR_RECURSION:
-                $error = 'One or more recursive references in the value to be encoded.';
-                break;
-                // PHP >= 5.5.0
-            case JSON_ERROR_INF_OR_NAN:
-                $error = 'One or more NAN or INF values in the value to be encoded.';
-                break;
-            case JSON_ERROR_UNSUPPORTED_TYPE:
-                $error = 'A value of a type that cannot be encoded was given.';
-                break;
-            default:
-                $error = 'Unknown JSON error occured.';
-                break;
-        }
-        return $error;
-    }
 
     public static function send($data, $cache = false, $die = true, $convert = true)
     {
@@ -377,12 +169,7 @@ class YiiHelper extends \RapTToR\Helper
         }
     }
 
-    public static function map($str, $params)
-    {
-        foreach ($params as $key => $value)
-            $str = str_replace($key, $value, $str);
-        return $str;
-    }
+
 
     public static function receive($url, $params = null, $cache = true)
     { // receive json
@@ -402,124 +189,6 @@ class YiiHelper extends \RapTToR\Helper
             \Yii::app()->cache->set($url, $data, CACHETIME);
         }
         return $data;
-    }
-
-    public static function curl($url)
-    {
-        if (!function_exists('curl_version')) {
-            exit("Enable cURL in PHP");
-        }
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322)');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        $data = curl_exec($ch);
-        $error = "";
-        if (isset($_GET["debug"]))
-            $error = 'Curl error: ' . curl_error($ch);
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-        if ($httpcode >= 200 && $httpcode < 300 && $data) {
-            return $data;
-        } else {
-            error_log($error);
-            return $error;
-        }
-    }
-
-    public static function exportModelAsJson($data)
-    {
-        return $json = (!self::is_json($data)) ? json_encode($data) : $data;
-    }
-
-    public static function ellipsis($text, $length)
-    {
-        return (mb_strlen($text) > $length) ? mb_substr($text, 0, $length) . '... ' : $text;
-    }
-
-    public static function replaceAll($what, $with, $str)
-    {
-        while (stripos($str, $what)) $str = str_ireplace($what, $with, $str);
-        return $str;
-    }
-
-    public static function urlText($str)
-    {
-        return self::replaceAll('__', '_', preg_replace('/[^\w]/', '_', $str));
-    }
-
-    public static function cors()
-    {
-
-        // Allow from any origin
-        if (isset($_SERVER['HTTP_ORIGIN'])) {
-            // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
-            // you want to allow, and if so:
-            header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-            header('Access-Control-Allow-Credentials: true');
-            header('Access-Control-Max-Age: 86400');    // cache for 1 day
-        }
-
-        // Access-Control headers are received during OPTIONS requests
-        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-
-            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-                // may also be using PUT, PATCH, HEAD etc
-                header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-
-            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-                header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-
-            exit(0);
-        }
-    }
-
-    /**
-     * Sort array or arrays items on key
-     * @param $array
-     * @param $key
-     * @param bool $desc
-     * @return array
-     */
-    public static function sortItems($array, $key, $desc = false)
-    {
-        $sorter = array();
-        $ret = array();
-        reset($array);
-        foreach ($array as $ii => $va) {
-            $sorter[$ii] = $va[$key];
-        }
-        asort($sorter);
-        if ($desc) $sorter = array_reverse($sorter);
-        foreach ($sorter as $ii => $va) {
-            $ret[$ii] = $array[$ii];
-        }
-        $array = $ret;
-
-        return $array;
-    }
-
-    /**
-     * @param $str
-     * @param string $delimiter
-     * @return array
-     */
-    public static function str2arr($str, $delimiter = ',')
-    {
-        $arr = array();
-        if (is_string($str)) $arr = explode($delimiter, $str);
-        foreach ($arr as $key => $value) $arr[$key] = trim($value);
-        $arr = array_unique($arr);
-        return $arr;
-    }
-
-    public static function vardumper($object)
-    {
-        echo "<pre>";
-        var_dump($object);
-        die;
     }
 
     /**
@@ -871,56 +540,6 @@ class YiiHelper extends \RapTToR\Helper
             $section = substr($section, 0, strlen($section) - 1);
         $url = Yii::app()->createUrl($section . '/view', array("id" => $obj->id));
         return $url;
-    }
-
-    public static function debug($message, $type = "info", $value = null)
-    {
-        global $RapTToR_HELPER;
-        $debug = array("message" => $message, "type" => $type, "value" => $value);
-        $RapTToR_HELPER["debug"][] = $debug;
-        error_log(json_encode($debug));
-    }
-
-    /**
-     * @param $strViewFile
-     * @param array $arVariables
-     * @param bool $return false
-     * @param null $sendthis null - pass $this inside object methods, accessible in template
-     * @return bool|string
-     */
-    public static function template($strViewFile, $arVariables = [], $return = false, $sendthis = null)
-    {
-        $strTemplate = $strViewFile . ".php";
-        $strResult = "";
-        if (file_exists($strTemplate)) {
-            if (is_object($arVariables)) $arVariables = (array)$arVariables;
-            if (!is_null($sendthis)) $arVariables["this"] = $sendthis;
-            extract($arVariables);
-            if ($return) ob_start();
-            include($strTemplate);
-            if ($return) $strResult = ob_get_clean();
-            if ($return) {
-                return $strResult;
-            } else {
-                echo $strResult;
-                return true;
-            }
-        } else return "Template not found $strViewFile";
-    }
-
-    /**
-     * @param $filehandle = fopen("{$filename}", "r")
-     * @param $callback function($data);
-     * @param int $rows 1000
-     * @param string $delimiter ,
-     * @param bool $close true
-     */
-    public function processLargeCSV($filehandle, $callback, $rows = 1000, $delimiter = ",", $close = true)
-    {
-        while (($data = fgetcsv($filehandle, $rows, $delimiter)) !== FALSE) {
-            call_user_func($callback, $data);
-        }
-        if ($close) fclose($filehandle);
     }
 
 
