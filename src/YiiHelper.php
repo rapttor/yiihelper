@@ -573,10 +573,11 @@ class YiiHelper extends \RapTToR\Helper
 
     public static function setLanguage($language)
     {
+        if ($language == "sr") $language = "rs";
         $userdata = Yii::app()->user->getState("userdata");
         $userdata["language"] = $language;
         Yii::app()->user->setState("userdata", $userdata);
-
+        Yii::app()->user->setState("language", $language);
         Yii::app()->language = $language;
     }
 
@@ -638,4 +639,37 @@ class YiiHelper extends \RapTToR\Helper
         return $command->execute($params);
         //return $connection->affected_rows();
     }
+
+    public static function execSql($sql, $params = array())
+    {
+        /** @var  CDbCommand $command */
+        $command = Yii::app()->db->createCommand($sql);
+        return $command->queryAll(true, $params);
+    }
+
+    public function flush()
+    {
+        // Load all tables of the application in the schema
+        Yii::app()->db->schema->getTables();
+        // clear the cache of all loaded tables
+        Yii::app()->db->schema->refresh();
+        // flush cache
+        Yii::app()->cache->flush();
+
+        Yii::app()->db->schema->getTables();
+        Yii::app()->db->schema->refresh();
+        Yii::app()->session->destroy();
+        
+    }
+
+    public function base()
+    {
+        if (isset($_SERVER["HTTP_HOST"])) {
+            $base = $_SERVER['DOCUMENT_ROOT'] . "/" . Yii::app()->baseUrl;
+        } else {
+            $base = Yii::getPathOfAlias('application');
+        }
+        return $base;
+    }
+    
 }
